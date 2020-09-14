@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "721900553437",
+    "firebase_url": "https://bidders-f7ceb.firebaseio.com",
+    "project_id": "bidders-f7ceb",
+    "storage_bucket": "bidders-f7ceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721900553437:android:01b71e6e9f90f83862c734",
+        "android_client_info": {
+          "package_name": "com.bidders"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721900553437-vmhafr53v4qd8j4dp7kqvispd20fo534.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bidders",
+            "certificate_hash": "461611605700fe603b5e5798b91aa413c38c9f79"
+          }
+        },
+        {
+          "client_id": "721900553437-uif8opsqfuqco9ajos9i47m9jknmata9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt6hjEtMK7lBYKxUBpIy1Btmwb3tJrspU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721900553437-uif8opsqfuqco9ajos9i47m9jknmata9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

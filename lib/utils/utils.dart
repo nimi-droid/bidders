@@ -98,13 +98,20 @@ class Utils {
 
   static ThemeData getAppThemeData() {
     return ThemeData(
-      appBarTheme: const AppBarTheme(
+        appBarTheme: const AppBarTheme(
+          brightness: Brightness.light,
+        ),
+        canvasColor: Colors.transparent,
+        primarySwatch: AppColors.primary_color,
+        fontFamily: font_rubik,
         brightness: Brightness.light,
-      ),
-      canvasColor: Colors.transparent,
-      primarySwatch: AppColors.primary_color,
-      fontFamily: font_rubik,
-      brightness: Brightness.light,
-    );
+        textTheme: const TextTheme(
+          headline1:
+              TextStyle(fontSize: 32, color: AppColors.primary_color, fontWeight: FontWeight.w700),
+          headline2:
+              TextStyle(fontSize: 28, color: AppColors.primary_color, fontWeight: FontWeight.w700),
+          headline3: TextStyle(fontSize: 24, color: AppColors.white, fontWeight: FontWeight.w700),
+          subtitle1: TextStyle(fontSize: 17, color: AppColors.white, fontWeight: FontWeight.w400),
+        ));
   }
 }

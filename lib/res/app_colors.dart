@@ -5,7 +5,7 @@ class AppColors extends MaterialColor {
 
   static const int primaryColorValue = 0xFF1a416a;
 
-  static const primaryColor = Color(0xff1a416a);
+  static const primaryColor = Color(0xff2f2f31);
   static const primaryColor10 = Color(0x1A1a416a);
 
   static const colorTransparent = Color(0x00000000);
@@ -25,6 +25,7 @@ class AppColors extends MaterialColor {
 
   //Grey Shades
   static const textGrey1 = Color(0xFF2a2e32);
+  static const blueColor = Color(0xFF5458f7);
 
   static const Color primary_color = MaterialColor(primaryColorValue, <int, Color>{
     50: Color(primaryColorValue),
