@@ -1,3 +1,1 @@
-class ImagePaths {
-  static const splashImage = 'assets/images/splash_image.svg';
-}
+const icUploadImage = 'assets/images/ic_upload_image.png';
