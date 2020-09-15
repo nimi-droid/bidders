@@ -103,7 +103,7 @@ class Utils {
       ),
       canvasColor: Colors.transparent,
       primarySwatch: AppColors.primary_color,
-      fontFamily: font_rubik,
+      fontFamily: font_proxima,
       brightness: Brightness.light,
     );
   }
