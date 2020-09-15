@@ -1,10 +1,13 @@
+import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/res/app_colors.dart';
+import 'package:bidders/ui/home_page.dart';
 import 'package:bidders/utils/utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../routes.dart';
 import 'common/primary_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +18,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double _screenWidth, _screenHeight;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final fireStoreInstance = FirebaseFirestore.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
   @override
@@ -77,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: _screenHeight * .033,
                   ),
                   PrimaryButton(
-                      buttonText: 'Continue with Google', onButtonPressed: ()=>{Utils.showToast(context, 'Coming soon')}),
+                      buttonText: 'Continue with Google', onButtonPressed: _loginWithGoogle),
                 ],
               )
             ],
@@ -85,35 +89,57 @@ class _LoginPageState extends State<LoginPage> {
         ));
   }
 
-  void _loginWithGoogle() {}
+  Future<void> _loginWithGoogle() async {
+    final User user = await signInWithGoogle();
+    if (user != null) {
+      navigateToHomePage();
+    } else {
+      print('Not validated');
+      //TODO do something
+    }
+  }
 
-  Future<String> signInWithGoogle() async {
-    await Firebase.initializeApp();
+  void navigateToHomePage() {
+    Navigator.pushReplacement(
+      context,
+      RouteAnimationSlideFromRight(
+        widget: HomePage(),
+        routeName: RouteNames.home,
+      ),
+    );
+  }
 
+  Future<User> signInWithGoogle() async {
     final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
-
+    if (googleSignInAuthentication == null) {
+      return null;
+    }
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
-
     final UserCredential authResult = await _auth.signInWithCredential(credential);
     final User user = authResult.user;
-
     if (user != null) {
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
-
-      final User currentUser = _auth.currentUser;
-      assert(user.uid == currentUser.uid);
-
+      //final User currentUser = _auth.currentUser;
+      saveUserToFireStore(
+          user, googleSignInAuthentication.accessToken, googleSignInAuthentication.idToken);
       print('signInWithGoogle succeeded: $user');
-
-      return '$user';
+      return user;
     }
-
     return null;
+  }
+
+  void saveUserToFireStore(User user, String accessToken, String idToken) {
+    fireStoreInstance.collection('users').doc(user.uid).set({
+      'name': user.displayName,
+      'email': user.email,
+      'image': user.photoURL,
+      'phoneNumber': user.phoneNumber,
+      'accessToken': accessToken,
+      'idToken': idToken,
+    }).then((_) {});
   }
 }
