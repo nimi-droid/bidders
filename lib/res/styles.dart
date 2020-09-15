@@ -15,8 +15,8 @@ const proximaBold = FontWeight.w700;
 
 //Medium Styles
 const tsMediumHeadingGrey1 =
-    TextStyle(color: AppColors.textGrey1, fontSize: 22.0, fontWeight: FontWeight.w500);
+    TextStyle(color: AppColors.textGrey1, fontSize: 22.0, fontWeight: proximaMedium);
 
 //Bold Styles
 const tsBoldButtonPrimary1 =
-    TextStyle(color: AppColors.textGrey1, fontSize: 18.0, fontWeight: FontWeight.w700);
+    TextStyle(color: AppColors.textGrey1, fontSize: 18.0, fontWeight: proximaBold);
