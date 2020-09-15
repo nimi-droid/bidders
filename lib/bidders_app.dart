@@ -3,6 +3,7 @@ import 'package:bidders/routes.dart';
 import 'package:bidders/utils/log.dart';
 import 'package:bidders/utils/shared_preferences.dart';
 import 'package:bidders/utils/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,8 @@ class BiddersApp extends StatelessWidget {
 
   Future<void> _initDependencies() async {
     Log.init();
-    Prefs.init();
+    await Prefs.init();
+    await Firebase.initializeApp();
   }
 }
 

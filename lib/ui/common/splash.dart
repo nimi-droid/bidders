@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../routes.dart';
+import '../home_feed_page.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -23,14 +27,38 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.primaryColor,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
-              child: Container(
-                child: Center(child: Icon(Icons.ac_unit)),
-              ),
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Grappus',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 5, bottom: 5, left: 7, right: 7),
+                    margin: const EdgeInsets.only(left: 5),
+                    decoration: const BoxDecoration(
+                        color: AppColors.blueColor,
+                        borderRadius: BorderRadius.all(Radius.circular(11))),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'BET',
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ),
+                  )
+                ],
+              )),
             ),
           ],
         ));
@@ -42,6 +70,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void navigateToPage() {
-    Utils.showSuccessMessage(context, 'Time over do something');
+    Navigator.pushReplacement(
+      context,
+      RouteAnimationSlideFromRight(
+//        widget: LoginPage(),
+        widget: HomeFeedPage(),
+        routeName: RouteNames.login,
+      ),
+    );
   }
 }

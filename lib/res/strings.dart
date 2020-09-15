@@ -2,7 +2,7 @@ const app_name = 'VPRx';
 const app_description = 'Be ready to get surprised';
 
 /*Fonts*/
-const font_rubik = 'Rubik';
+const font_proxima = 'Proxima';
 
 /*Errors*/
 const error_general = 'Something went wrong! Please try again';
@@ -18,3 +18,5 @@ const coming = 'Coming';
 const soon = 'Soon!';
 const loading = 'Loading';
 const logged_out_successfully = 'Logged out successfully!';
+
+const hintStartPoll = 'Start a poll..';
