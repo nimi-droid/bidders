@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/res/app_colors.dart';
-import 'package:bidders/ui/login_page.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes.dart';
+import '../home_feed_page.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -73,7 +73,8 @@ class _SplashPageState extends State<SplashPage> {
     Navigator.pushReplacement(
       context,
       RouteAnimationSlideFromRight(
-        widget: LoginPage(),
+//        widget: LoginPage(),
+        widget: HomeFeedPage(),
         routeName: RouteNames.login,
       ),
     );

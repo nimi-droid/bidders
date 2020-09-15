@@ -18,3 +18,5 @@ const coming = 'Coming';
 const soon = 'Soon!';
 const loading = 'Loading';
 const logged_out_successfully = 'Logged out successfully!';
+
+const hintStartPoll = 'Start a poll..';
