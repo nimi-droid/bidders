@@ -4,6 +4,7 @@ import 'package:bidders/res/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 import '../custom_views/custom_overlays.dart';
@@ -112,5 +113,11 @@ class Utils {
           headline3: TextStyle(fontSize: 24, color: AppColors.white, fontWeight: FontWeight.w700),
           subtitle1: TextStyle(fontSize: 17, color: AppColors.white, fontWeight: FontWeight.w400),
         ));
+  }
+
+  static String getFormattedDate(String format, DateTime dateTime) {
+    final DateFormat formatter = DateFormat(format);
+    final String formattedDate = formatter.format(dateTime);
+    return formattedDate;
   }
 }
