@@ -18,6 +18,13 @@ class AppColors extends MaterialColor {
   //White shades
   static const white = Color(0xFFFFFFFF);
   static const white10 = Color(0x1AFFFFFF);
+  static const whiteOpacity20 = Color(0x33FFFFFF);
+  static const whiteOpacity30 = Color(0x4DFFFFFF);
+  static const whiteOpacity40 = Color(0x66FFFFFF);
+  static const whiteOpacity50 = Color(0x80FFFFFF);
+  static const whiteOpacity60 = Color(0x99FFFFFF);
+  static const whiteOpacity70 = Color(0xB3FFFFFF);
+  static const whiteOpacity80 = Color(0xCCFFFFFF);
 
   //Black shades
   static const black = Color(0xFF000000);

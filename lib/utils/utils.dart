@@ -103,11 +103,10 @@ class Utils {
         ),
         canvasColor: Colors.transparent,
         primarySwatch: AppColors.primary_color,
-        fontFamily: font_rubik,
+        fontFamily: font_proxima,
         brightness: Brightness.light,
         textTheme: const TextTheme(
-          headline1:
-              TextStyle(fontSize: 32, color: AppColors.primary_color, fontWeight: FontWeight.w700),
+          headline1: TextStyle(fontSize: 32, color: AppColors.white, fontWeight: FontWeight.w700),
           headline2:
               TextStyle(fontSize: 28, color: AppColors.primary_color, fontWeight: FontWeight.w700),
           headline3: TextStyle(fontSize: 24, color: AppColors.white, fontWeight: FontWeight.w700),
