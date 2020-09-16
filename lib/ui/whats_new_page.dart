@@ -1,10 +1,12 @@
-import 'package:bidders/custom_views/route_animations.dart';
-import 'package:bidders/res/app_colors.dart';
-import 'package:bidders/res/strings.dart';
-import 'package:bidders/ui/common/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
+import '../custom_views/route_animations.dart';
+import '../res/app_colors.dart';
+import '../res/image_paths.dart';
+import '../res/strings.dart';
 import '../routes.dart';
+import 'common/primary_button.dart';
 import 'home_page.dart';
 
 class WhatsNewPage extends StatelessWidget {
@@ -33,11 +35,11 @@ class WhatsNewPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: _screenHeight * 0.038),
-            _item(context, 'Place bets', label_title_1, label_subtitle_1),
+            _item(context, ic_purple_boxed_check, label_title_1, label_subtitle_1),
             SizedBox(height: _screenHeight * 0.038),
-            _item(context, 'Place bets', label_title_2, label_subtitle_2),
+            _item(context, ic_purple_boxed_check, label_title_2, label_subtitle_2),
             SizedBox(height: _screenHeight * 0.038),
-            _item(context, 'Place bets', label_title_3, label_subtitle_3),
+            _item(context, ic_purple_boxed_check, label_title_3, label_subtitle_3),
             const Expanded(child: SizedBox()),
             PrimaryButton(
               buttonText: btn_lets_go,
@@ -51,9 +53,10 @@ class WhatsNewPage extends StatelessWidget {
 
   Widget _item(BuildContext context, String image, String title, String subtitle) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(image),
+        SvgPicture.asset(image),
         const SizedBox(width: 18),
         Expanded(
           child: Column(

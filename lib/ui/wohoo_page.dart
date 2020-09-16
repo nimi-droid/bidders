@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../res/image_paths.dart';
 import 'common/primary_button.dart';
 
 class WohooPage extends StatelessWidget {
-
   /*WohooPage({DateTime dateTime}) {
     date = '${dateTime.day}/${dateTime.month}';
     time = '${dateTime.hour}:${dateTime.minute}';
