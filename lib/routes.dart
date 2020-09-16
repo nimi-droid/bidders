@@ -1,9 +1,11 @@
-import 'package:bidders/ui/common/splash.dart';
-import 'package:bidders/ui/date_time_page.dart';
-import 'package:bidders/ui/home_page.dart';
-import 'package:bidders/ui/login_page.dart';
-import 'package:bidders/ui/whats_about_page.dart';
 import 'package:flutter/material.dart';
+
+import 'ui/common/splash.dart';
+import 'ui/date_time_page.dart';
+import 'ui/home_page.dart';
+import 'ui/login_page.dart';
+import 'ui/whats_about_page.dart';
+import 'ui/wohoo_page.dart';
 
 ///This class handles all the routes in the application
 class RouteNames {
@@ -12,6 +14,7 @@ class RouteNames {
   static const home = '/home';
   static const whatsNext = '/whatsNext';
   static const dateTime = '/dateTime';
+  static const wohoo = "/wohoo";
 }
 
 final routes = <String, WidgetBuilder>{
@@ -20,4 +23,5 @@ final routes = <String, WidgetBuilder>{
   RouteNames.home: (context) => HomePage(),
   RouteNames.whatsNext: (context) => WhatsAboutPage(),
   RouteNames.dateTime: (context) => DateTimePage(),
+  RouteNames.wohoo: (context) => WohooPage(),
 };
