@@ -1,7 +1,8 @@
-import 'package:bidders/models/error_response.dart';
-import 'package:bidders/utils/utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import '../models/error_response.dart';
+import '../utils/utils.dart';
 
 abstract class AbstractRepository {
   BuildContext mContext;
