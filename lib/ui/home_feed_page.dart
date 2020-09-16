@@ -1,7 +1,9 @@
+import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
+import 'package:bidders/ui/whats_about_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,7 @@ class HomeFeedPage extends StatelessWidget {
       backgroundColor: AppColors.charcoalGrey,
       body: SafeArea(
         child: Column(
-          children: [getHeaderWidget(), getPollWidget()],
+          children: [getHeaderWidget(context), getPollWidget()],
         ),
       ),
     );
@@ -32,7 +34,7 @@ class HomeFeedPage extends StatelessWidget {
     );
   }
 
-  Widget getHeaderWidget() {
+  Widget getHeaderWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Column(
@@ -89,17 +91,31 @@ class HomeFeedPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 35),
-          Row(
-            children: [
-              CircularImageView(url: sampleImageUrl, callBack: null),
-              const SizedBox(width: 11),
-              Text(hintStartPoll,
-                  style: tsBoldButtonPrimary1.copyWith(color: AppColors.whiteOpacity30)),
-              const SizedBox(width: 27),
-            ],
+          InkWell(
+            onTap: () {
+              startNewPoll(context);
+            },
+            child: Row(
+              children: [
+                CircularImageView(url: sampleImageUrl, callBack: null),
+                const SizedBox(width: 11),
+                Text(hintStartPoll,
+                    style: tsBoldButtonPrimary1.copyWith(color: AppColors.whiteOpacity30)),
+                const SizedBox(width: 27),
+              ],
+            ),
           ),
           const SizedBox(height: 35),
         ],
+      ),
+    );
+  }
+
+  void startNewPoll(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      RouteAnimationSlideFromRight(
+        widget: WhatsAboutPage(),
       ),
     );
   }
