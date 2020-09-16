@@ -9,8 +9,7 @@ import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../routes.dart';
-import 'login_page.dart';
+import 'create/options_page.dart';
 
 class DateTimePage extends StatefulWidget {
   @override
@@ -255,7 +254,12 @@ class _DateTimePageState extends State<DateTimePage> {
 
   void _navigateToPage(BuildContext context) {
     if (hasDateEntered) {
-      Utils.showToast(context, 'Coming soon');
+      Navigator.pushReplacement(
+        context,
+        RouteAnimationSlideFromRight(
+          widget: OptionsPage(),
+        ),
+      );
     } else {
       Utils.showErrorMessage(context, 'Please select date and time!');
     }
