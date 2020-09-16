@@ -6,7 +6,7 @@ import 'package:bidders/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
-import 'login_page.dart';
+import 'date_time_page.dart';
 
 class WhatsAboutPage extends StatefulWidget {
   @override
@@ -34,7 +34,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
     return Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: Stack(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.topLeft,
           children: <Widget>[
             Align(
               alignment: Alignment.topLeft,
@@ -44,7 +44,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
                   margin: EdgeInsets.only(top: _screenWidth * 0.094),
                   padding: EdgeInsets.only(left: _screenWidth * 0.10, right: _screenWidth * 0.10),
                   child: const Icon(
-                    Icons.settings_backup_restore,
+                    Icons.arrow_back,
                     size: 40,
                     color: AppColors.white,
                   ),
@@ -54,7 +54,10 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
             SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: _screenWidth * 0.10, right: _screenWidth * 0.10, bottom: 50),
+                    left: _screenWidth * 0.10,
+                    right: _screenWidth * 0.10,
+                    bottom: 50,
+                    top: _screenHeight * 0.29),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,12 +117,11 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
 
   void _navigateToPage(BuildContext context) {
     if (hasTextEntered) {
-      /*TODO move to next page*/
       Navigator.push(
         context,
         RouteAnimationSlideFromRight(
-          widget: LoginPage(),
-          routeName: RouteNames.login,
+          widget: DateTimePage(),
+          routeName: RouteNames.dateTime,
         ),
       );
     } else {

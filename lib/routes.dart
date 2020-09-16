@@ -1,4 +1,5 @@
 import 'package:bidders/ui/common/splash.dart';
+import 'package:bidders/ui/date_time_page.dart';
 import 'package:bidders/ui/home_page.dart';
 import 'package:bidders/ui/login_page.dart';
 import 'package:bidders/ui/whats_about_page.dart';
@@ -10,6 +11,7 @@ class RouteNames {
   static const login = '/login';
   static const home = '/home';
   static const whatsNext = '/whatsNext';
+  static const dateTime = '/dateTime';
 }
 
 final routes = <String, WidgetBuilder>{
@@ -17,4 +19,5 @@ final routes = <String, WidgetBuilder>{
   RouteNames.login: (context) => LoginPage(),
   RouteNames.home: (context) => HomePage(),
   RouteNames.whatsNext: (context) => WhatsAboutPage(),
+  RouteNames.dateTime: (context) => DateTimePage(),
 };
