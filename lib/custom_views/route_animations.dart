@@ -1,5 +1,6 @@
-import 'package:bidders/utils/utils.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/utils.dart';
 
 class BasePageRouteBuilder extends PageRouteBuilder {
   BasePageRouteBuilder({this.routeName});
@@ -8,23 +9,22 @@ class BasePageRouteBuilder extends PageRouteBuilder {
 
   @override
   RouteSettings get settings {
-    if (Utils.isEmpty(routeName))
+    if (Utils.isEmpty(routeName)) {
       return super.settings;
-    else
+    } else {
       return RouteSettings(
         name: routeName,
         arguments: super.settings.arguments,
       );
+    }
   }
 }
 
 class RouteAnimationNone extends PageRouteBuilder {
   RouteAnimationNone({@required this.widget})
-      : super(pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
+      : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
-        }, transitionsBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation, Widget child) {
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child;
         });
 
@@ -36,11 +36,9 @@ class RouteAnimationNone extends PageRouteBuilder {
 
 class RouteAnimationNoneWithDuration extends PageRouteBuilder {
   RouteAnimationNoneWithDuration({@required this.widget, @required this.animDuration})
-      : super(pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
+      : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
-        }, transitionsBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation, Widget child) {
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child;
         });
 
@@ -53,14 +51,12 @@ class RouteAnimationNoneWithDuration extends PageRouteBuilder {
 
 class RouteAnimationSlideFromRight extends PageRouteBuilder {
   RouteAnimationSlideFromRight({this.widget, this.routeName})
-      : super(pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
+      : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
-        }, transitionsBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation, Widget child) {
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
             position: Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
+              begin: const Offset(1, 0),
               end: Offset.zero,
             ).animate(animation),
             child: child,
@@ -72,23 +68,22 @@ class RouteAnimationSlideFromRight extends PageRouteBuilder {
 
   @override
   RouteSettings get settings {
-    if (Utils.isEmpty(routeName))
+    if (Utils.isEmpty(routeName)) {
       return super.settings;
-    else
+    } else {
       return RouteSettings(
         name: routeName,
         arguments: super.settings.arguments,
       );
+    }
   }
 }
 
 class RouteAnimationFadeIn extends PageRouteBuilder {
-  RouteAnimationFadeIn(this.widget, this.shouldMaintainState, {this.routeName})
-      : super(pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
+  RouteAnimationFadeIn(this.widget, {this.shouldMaintainState = false, this.routeName})
+      : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
-        }, transitionsBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation, Widget child) {
+        }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
             child: child,
@@ -106,12 +101,13 @@ class RouteAnimationFadeIn extends PageRouteBuilder {
 
   @override
   RouteSettings get settings {
-    if (Utils.isEmpty(routeName))
+    if (Utils.isEmpty(routeName)) {
       return super.settings;
-    else
+    } else {
       return RouteSettings(
         name: routeName,
         arguments: super.settings.arguments,
       );
+    }
   }
 }
