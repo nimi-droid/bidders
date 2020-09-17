@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 
-import '../models/dummy_poll.dart';
+import '../models/dummy_bets.dart';
 import '../res/app_colors.dart';
 
 // ignore: must_be_immutable
 class MyBetsPage extends StatelessWidget {
   double _screenWidth, _screenHeight;
-  List<MyPolls> betsList = [
-    const MyPolls(
+
+  //dummy data
+  List<MyBets> betsList = [
+    const MyBets(
       question: 'Who’ll win the premier league this season?',
       optionChosen: 'Manchester City',
       odds: '1:3',
       stake: '₹ 200',
       possibleWinning: '₹ 600',
     ),
-    const MyPolls(
+    const MyBets(
+      question: 'Who’ll win the premier league this season?',
+      optionChosen: 'Chelsea',
+      odds: '1:3',
+      stake: '₹ 100',
+      possibleWinning: '₹ 300',
+    ),
+    const MyBets(
+      question: 'Who’ll win the premier league this season?',
+      optionChosen: 'Chelsea',
+      odds: '1:3',
+      stake: '₹ 100',
+      possibleWinning: '₹ 300',
+    ),
+    const MyBets(
       question: 'Who’ll win the premier league this season?',
       optionChosen: 'Chelsea',
       odds: '1:3',
@@ -70,11 +86,11 @@ class MyBetsPage extends StatelessWidget {
     );
   }
 
-  Widget _listItem(BuildContext context, MyPolls poll) {
+  Widget _listItem(BuildContext context, MyBets poll) {
     return Container(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: AppColors.white15,
+        color: AppColors.whiteOpacity15,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,5 +167,7 @@ class MyBetsPage extends StatelessWidget {
     );
   }
 
-  void _navigateToPrevious(BuildContext context) {}
+  void _navigateToPrevious(BuildContext context) {
+    Navigator.pop(context);
+  }
 }
