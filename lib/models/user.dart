@@ -16,6 +16,7 @@ class User {
     this.image,
     this.name,
     this.phoneNumber,
+    this.walletBalance,
   });
 
   String accessToken;
@@ -24,6 +25,7 @@ class User {
   String image;
   String name;
   String phoneNumber;
+  int walletBalance;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         accessToken: json["accessToken"] == null ? null : json["accessToken"],
@@ -32,6 +34,7 @@ class User {
         image: json["image"] == null ? null : json["image"],
         name: json["name"] == null ? null : json["name"],
         phoneNumber: json["phoneNumber"] == null ? null : json["phoneNumber"],
+        walletBalance: json["walletBalance"] == null ? null : json["walletBalance"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +44,6 @@ class User {
         "image": image == null ? null : image,
         "name": name == null ? null : name,
         "phoneNumber": phoneNumber == null ? null : phoneNumber,
+        "walletBalance": walletBalance == null ? null : walletBalance,
       };
 }

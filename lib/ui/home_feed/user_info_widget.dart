@@ -10,7 +10,8 @@ class UserInfoWidget extends StatelessWidget {
   final USER_INFO_TRAILING_WIDGET trailing;
   final VoidCallback onTrailingBtnPressed;
 
-  UserInfoWidget(this.imageUrl, this.heading, this.value, this.trailing, this.onTrailingBtnPressed);
+  const UserInfoWidget(
+      this.imageUrl, this.heading, this.value, this.trailing, this.onTrailingBtnPressed);
 
   @override
   Widget build(BuildContext context) {

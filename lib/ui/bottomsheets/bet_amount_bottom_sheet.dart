@@ -4,6 +4,7 @@ import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/common/primary_button.dart';
 import 'package:bidders/ui/home_feed/user_info_widget.dart';
+import 'package:bidders/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../home_feed_page.dart';

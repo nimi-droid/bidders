@@ -28,6 +28,9 @@ const tsMediumHeadingGrey1 =
 const tsBold1 = TextStyle(
     color: AppColors.white, fontSize: 34, fontWeight: proximaBold, fontFamily: font_proxima);
 
+const tsBold2 = TextStyle(
+    color: AppColors.white, fontSize: 25, fontWeight: proximaBold, fontFamily: font_proxima);
+
 const tsBoldDarkGrey = TextStyle(
     color: AppColors.darkGrey, fontSize: 17.0, fontWeight: proximaBold, fontFamily: font_proxima);
 
