@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:bidders/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
@@ -17,6 +20,10 @@ class PrefUtils {
 
   static String getUserToken() {
     final String value = prefs.getString(SharedPrefsKeys.USER_TOKEN);
-    return value ?? '';
+    return value;
+  }
+
+  static void setUser(AppUser user) {
+    prefs.setString(KPrefs.USER_DATA, json.encode(user));
   }
 }

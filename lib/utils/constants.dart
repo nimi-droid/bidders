@@ -33,6 +33,7 @@ class KPrefs {
   static const TOKEN = 'token';
   static const IS_LOGGED_IN = 'is_logged_in';
 
+  static const USER_DATA = 'user-data';
   static const USER_ID = 'user_id';
   static const USER_EMAIL = 'user_email';
   static const USER_NAME = 'user_name';

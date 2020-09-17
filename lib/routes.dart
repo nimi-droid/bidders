@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'ui/common/splash.dart';
 import 'ui/date_time_page.dart';
+import 'ui/home_feed_page.dart';
 import 'ui/home_page.dart';
 import 'ui/login_page.dart';
 import 'ui/whats_about_page.dart';
@@ -22,7 +23,7 @@ class RouteNames {
 final routes = <String, WidgetBuilder>{
   RouteNames.splash: (context) => SplashPage(),
   RouteNames.login: (context) => LoginPage(),
-  RouteNames.home: (context) => HomePage(),
+  RouteNames.home: (context) => HomeFeedPage(),
   RouteNames.whatsNext: (context) => WhatsAboutPage(),
   RouteNames.dateTime: (context) => DateTimePage(),
   RouteNames.wohoo: (context) => WohooPage(),

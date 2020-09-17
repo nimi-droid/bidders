@@ -47,3 +47,27 @@ class User {
         "walletBalance": walletBalance == null ? null : walletBalance,
       };
 }
+
+class AppUser {
+  String id;
+  String accessToken;
+  String email;
+  String idToken;
+  String image;
+  String name;
+  String phoneNumber;
+  Map<String, dynamic> votedPolls;
+  bool hasVoted;
+
+  AppUser({
+    this.id,
+    this.accessToken,
+    this.email,
+    this.idToken,
+    this.image,
+    this.name,
+    this.phoneNumber,
+    this.votedPolls,
+    this.hasVoted,
+  });
+}
