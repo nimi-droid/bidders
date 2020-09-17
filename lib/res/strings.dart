@@ -30,3 +30,6 @@ const label_subtitle_2 = 'Get opinions on any question with a few taps';
 const label_title_3 = 'Win money';
 const label_subtitle_3 = 'Play smartly and get money in your wallet';
 const btn_lets_go = 'Let’s Go!';
+
+/*Buttons*/
+const submit = 'Submit';

@@ -17,8 +17,8 @@ class AppColors extends MaterialColor {
 
   //White shades
   static const white = Color(0xFFFFFFFF);
-  static const white10 = Color(0x1AFFFFFF);
-  static const white15 = Color(0x26ffffff);
+  static const whiteOpacity10 = Color(0x1AFFFFFF);
+  static const whiteOpacity15 = Color(0x26ffffff);
   static const white9 = Color(0x17ffffff);
   static const whiteOpacity20 = Color(0x33FFFFFF);
   static const whiteOpacity30 = Color(0x4DFFFFFF);
@@ -30,12 +30,14 @@ class AppColors extends MaterialColor {
 
   //Black shades
   static const black = Color(0xFF000000);
-  static const black10 = Color(0x1A000000);
+  static const blackOpacity10 = Color(0x1A000000);
+  static const blackOpacity80 = Color(0xCC000000);
 
   //Grey Shades
   static const textGrey1 = Color(0xFF2a2e32);
   static const blueColor = Color(0xFF5458f7);
   static const charcoalGrey = Color(0xFF2f2f31);
+  static const charcoalGrey2 = Color(0xFF444446);
   static const darkGrey = Color(0xFF191a1d);
   static const strongPink = Color(0xFFff0e83);
 

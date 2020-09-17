@@ -13,13 +13,23 @@ const proximaMedium = FontWeight.w500;
 const proximaSemiBold = FontWeight.w600;
 const proximaBold = FontWeight.w700;
 
+//Regular Styles
+const tsRegular1 = TextStyle(
+    color: AppColors.white, fontSize: 17.0, fontWeight: proximaRegular, fontFamily: font_proxima);
+
+const tsRegular2 = TextStyle(
+    color: AppColors.white, fontSize: 34, fontWeight: proximaRegular, fontFamily: font_proxima);
+
 //Medium Styles
 const tsMediumHeadingGrey1 =
     TextStyle(color: AppColors.textGrey1, fontSize: 22.0, fontWeight: proximaMedium);
 
 //Bold Styles
-const tsBoldButtonPrimary1 = TextStyle(
-    color: AppColors.white, fontSize: 17.0, fontWeight: proximaBold, fontFamily: font_proxima);
+const tsBold1 = TextStyle(
+    color: AppColors.white, fontSize: 34, fontWeight: proximaBold, fontFamily: font_proxima);
+
+const tsBold2 = TextStyle(
+    color: AppColors.white, fontSize: 25, fontWeight: proximaBold, fontFamily: font_proxima);
 
 const tsBoldDarkGrey = TextStyle(
     color: AppColors.darkGrey, fontSize: 17.0, fontWeight: proximaBold, fontFamily: font_proxima);

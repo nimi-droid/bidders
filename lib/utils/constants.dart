@@ -1,5 +1,8 @@
 import 'package:package_info/package_info.dart';
 
+const sampleImageUrl = 'https://icon2.cleanpng'
+    '.com/20190304/yjt/kisspng-shinnosuke-nohara-video-crayon-shin-chan-nene-saku-shinchan-heart-anime-j-5c7cba96b08d02.6422473215516781027232.jpg';
+
 // ignore: avoid_classes_with_only_static_members
 class KGlobal {
   // ignore: non_constant_identifier_names

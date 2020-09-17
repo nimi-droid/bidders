@@ -50,7 +50,7 @@ class RouteAnimationNoneWithDuration extends PageRouteBuilder {
 }
 
 class RouteAnimationSlideFromRight extends PageRouteBuilder {
-  RouteAnimationSlideFromRight({this.widget, this.routeName})
+  RouteAnimationSlideFromRight({this.widget, this.routeName, this.shouldMaintainState = false})
       : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
         }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -65,6 +65,7 @@ class RouteAnimationSlideFromRight extends PageRouteBuilder {
 
   final Widget widget;
   final String routeName;
+  final bool shouldMaintainState;
 
   @override
   RouteSettings get settings {
@@ -76,6 +77,11 @@ class RouteAnimationSlideFromRight extends PageRouteBuilder {
         arguments: super.settings.arguments,
       );
     }
+  }
+
+  @override
+  bool get maintainState {
+    return shouldMaintainState;
   }
 }
 

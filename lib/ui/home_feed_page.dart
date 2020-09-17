@@ -1,14 +1,18 @@
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/extensions/context_extension.dart';
 import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
+import 'package:bidders/ui/home_feed/user_info_widget.dart';
 import 'package:bidders/ui/whats_about_page.dart';
+import 'package:bidders/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'common/circular_image_view.dart';
 import 'common/stacked_images.dart';
+import 'leaderboard/leaderboard_page.dart';
 
 class HomeFeedPage extends StatelessWidget {
   @override
@@ -29,7 +33,11 @@ class HomeFeedPage extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(height: 10),
         itemCount: 3,
         shrinkWrap: true,
-        itemBuilder: (context, index) => PollItem(),
+        itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              context.showBetAmountBottomSheet();
+            },
+            child: PollItem()),
       ),
     );
   }
@@ -50,7 +58,7 @@ class HomeFeedPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: const TextSpan(
                       text: 'Grappus',
-                      style: tsBoldButtonPrimary1,
+                      style: tsRegular1,
                     ),
                   ),
                   Container(
@@ -63,31 +71,54 @@ class HomeFeedPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       text: const TextSpan(
                         text: 'BET',
-                        style: tsBoldButtonPrimary1,
+                        style: tsRegular1,
                       ),
                     ),
                   )
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-                decoration: const BoxDecoration(
-                  color: AppColors.white10,
-                  borderRadius: BorderRadius.all(Radius.circular(100)),
-                ),
-                // ignore: prefer_const_literals_to_create_immutables
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.account_balance_wallet,
-                      color: AppColors.white,
-                      size: 18,
+              Row(
+                children: [
+                  Container(
+                    height: 30,
+                    padding: const EdgeInsets.only(left: 15, right: 15),
+                    decoration: const BoxDecoration(
+                      color: AppColors.whiteOpacity10,
+                      borderRadius: BorderRadius.all(Radius.circular(100)),
                     ),
-                    const SizedBox(width: 9),
-                    const Text("₹ 2,500", style: tsBoldWhite14)
-                  ],
-                ),
-              )
+                    // ignore: prefer_const_literals_to_create_immutables
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.account_balance_wallet,
+                          color: AppColors.white,
+                          size: 15,
+                        ),
+                        const SizedBox(width: 9),
+                        const Text("₹ 2,500", style: tsBoldWhite14)
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 30,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.whiteOpacity10,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: IconButton(
+                        icon: const Icon(Icons.receipt, size: 15),
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.push(
+                              context, RouteAnimationSlideFromRight(widget: LeaderBoardPage()));
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           const SizedBox(height: 35),
@@ -97,10 +128,9 @@ class HomeFeedPage extends StatelessWidget {
             },
             child: Row(
               children: [
-                CircularImageView(url: sampleImageUrl, callBack: null),
+                const CircularImageView(url: sampleImageUrl, callBack: null),
                 const SizedBox(width: 11),
-                Text(hintStartPoll,
-                    style: tsBoldButtonPrimary1.copyWith(color: AppColors.whiteOpacity30)),
+                Text(hintStartPoll, style: tsRegular1.copyWith(color: AppColors.whiteOpacity30)),
                 const SizedBox(width: 27),
               ],
             ),
@@ -130,9 +160,15 @@ class PollItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          informationWidget(sampleImageUrl, "Nimish Nandwana", "4 min ago"),
+          UserInfoWidget(
+            sampleImageUrl,
+            "Nimish Nandwana",
+            "4 min ago",
+            USER_INFO_TRAILING_WIDGET.poll,
+            null,
+          ),
           SizedBox(height: 20),
-          Text(sampleQuestion, style: tsBoldButtonPrimary1),
+          Text(sampleQuestion, style: tsRegular1),
           SizedBox(height: 17),
           getPollPercentageIndicator(),
           SizedBox(height: 40),
@@ -153,7 +189,7 @@ class PollItem extends StatelessWidget {
             child: LinearProgressIndicator(
               value: 0.7,
               valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
-              backgroundColor: AppColors.white15,
+              backgroundColor: AppColors.whiteOpacity15,
             ),
           ),
         ),
@@ -164,44 +200,7 @@ class PollItem extends StatelessWidget {
       ],
     );
   }
-
-  Widget informationWidget(String imageUrl, String heading, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              CircularImageView(url: imageUrl, callBack: null),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(heading, style: tsBoldWhite14),
-                    Text(value, style: tsBoldWhite12.copyWith(color: AppColors.whiteOpacity60)),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 6),
-          padding: const EdgeInsets.only(top: 3, bottom: 3, left: 13, right: 13),
-          decoration: const BoxDecoration(
-            color: AppColors.strongPink,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-          ),
-          child: const Text('POLL', style: tsBoldWhite10),
-        )
-      ],
-    );
-  }
 }
-
-const sampleImageUrl = 'https://icon2.cleanpng'
-    '.com/20190304/yjt/kisspng-shinnosuke-nohara-video-crayon-shin-chan-nene-saku-shinchan-heart-anime-j-5c7cba96b08d02.6422473215516781027232.jpg';
 
 const sampleQuestion = 'Which is the fastest framework for\ncross-platform app development?';
 List<RecentPeople> getRecentPeopleList = [
