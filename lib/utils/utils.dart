@@ -112,6 +112,7 @@ class Utils {
               TextStyle(fontSize: 28, color: AppColors.primary_color, fontWeight: FontWeight.w700),
           headline3: TextStyle(fontSize: 24, color: AppColors.white, fontWeight: FontWeight.w700),
           subtitle1: TextStyle(fontSize: 17, color: AppColors.white, fontWeight: FontWeight.w400),
+          subtitle2: TextStyle(fontSize: 12, color: AppColors.white, fontWeight: FontWeight.w400),
         ));
   }
 
