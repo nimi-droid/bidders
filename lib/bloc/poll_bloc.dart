@@ -3,6 +3,7 @@ import 'package:bidders/models/poll.dart';
 import 'package:bidders/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends BaseBloc {
   FirebaseFirestore firestore;
@@ -11,6 +12,15 @@ class PollBloc extends BaseBloc {
   PollBloc() {
     firestore = FirebaseFirestore.instance;
     firebaseAuth = FirebaseAuth.instance;
+  }
+
+  final _getPollsSuccessBS = BehaviorSubject<List<Poll>>();
+
+  Stream<List<Poll>> get getPollsListStream => _getPollsSuccessBS.stream;
+
+  @override
+  void onDispose() {
+    _getPollsSuccessBS.close();
   }
 
   /* CREATING POLL */
@@ -66,17 +76,19 @@ class PollBloc extends BaseBloc {
       });
       transaction.update(userRef, {'votedPolls.${pollId}': choice});
     });
-    
+
     var updatedPoll;
-    await firestore.collection('polls').doc(pollId).get().then((poll) => {
-      updatedPoll = getPollFromDocumentData(poll, true)
-    });
+    await firestore
+        .collection('polls')
+        .doc(pollId)
+        .get()
+        .then((poll) => {updatedPoll = getPollFromDocumentData(poll, true)});
 
     return updatedPoll;
   }
 
   /* GET ALL POLLS DATA */
-  Future<List<Poll>> fetchAllPolls() async {
+  Future<void> fetchAllPolls() async {
     final List<Poll> polls = [];
     await fetchUser(firebaseAuth.currentUser.uid).then((user) => {
           firestore.collection('polls').get().then((querySnapshot) {
@@ -88,7 +100,7 @@ class PollBloc extends BaseBloc {
             });
           })
         });
-    return polls;
+    _getPollsSuccessBS.add(polls);
   }
 
   Poll getPollFromDocumentData(QueryDocumentSnapshot document, bool hasUserVoted) {
