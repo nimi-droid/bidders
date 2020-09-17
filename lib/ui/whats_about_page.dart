@@ -1,4 +1,5 @@
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/models/create_poll_request.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/ui/common/heading_description_widget.dart';
 import 'package:bidders/ui/common/primary_button.dart';
@@ -6,7 +7,7 @@ import 'package:bidders/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../routes.dart';
-import 'date_time_page.dart';
+import 'create/options_page.dart';
 
 class WhatsAboutPage extends StatefulWidget {
   @override
@@ -38,8 +39,10 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
           children: <Widget>[
             Align(
               alignment: Alignment.topLeft,
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
                 child: Container(
                   margin: EdgeInsets.only(top: _screenWidth * 0.094),
                   padding: EdgeInsets.only(left: _screenWidth * 0.10, right: _screenWidth * 0.10),
@@ -116,10 +119,11 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
 
   void _navigateToPage(BuildContext context) {
     if (hasTextEntered) {
+      final request = CreatePollRequest(description: _textController.text);
       Navigator.push(
         context,
         RouteAnimationSlideFromRight(
-          widget: DateTimePage(),
+          widget: OptionsPage(createPollRequest: request),
           routeName: RouteNames.dateTime,
         ),
       );

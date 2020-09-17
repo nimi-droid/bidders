@@ -66,7 +66,7 @@ class KApiEndPoints {
 }
 
 class KDateFormats {
-  static const DATE_FORMAT_1 = 'yyyy-MM-dd';
+  static const DATE_FORMAT_1 = 'dd/MM';
   static const DATE_FORMAT_2 = 'yyyy/MM/dd';
   static const DATE_FORMAT_3 = 'dd/MM/yyyy';
   static const DATE_FORMAT_4 = 'EEEE, d MMMM';
@@ -75,7 +75,7 @@ class KDateFormats {
   static const DATE_FORMAT_7 = 'hh:mm a';
   static const DATE_FORMAT_8 = 'EEEE, MMMM d';
   static const DATE_FORMAT_9 = 'MMMM yyyy';
-  static const DATE_FORMAT_10 = 'ddMMyy';
+  static const DATE_FORMAT_10 = 'kk:mm:a';
   static const DATE_FORMAT_11 = 'dd/MM kk:mm:a';
 }
 

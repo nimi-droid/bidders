@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import '../../routes.dart';
 import '../../utils/pref_utils.dart';
-import '../../utils/pref_utils.dart';
 import '../home_feed_page.dart';
 import '../login_page.dart';
 
@@ -76,7 +75,6 @@ class _SplashPageState extends State<SplashPage> {
     Navigator.pushReplacement(
       context,
       RouteAnimationSlideFromRight(
-//        widget: LoginPage(),
         widget: PrefUtils.getUserToken() != null ? HomeFeedPage() : LoginPage(),
         routeName: PrefUtils.getUserToken() != null ? RouteNames.home : RouteNames.login,
       ),

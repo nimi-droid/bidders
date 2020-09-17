@@ -1,17 +1,22 @@
 import 'dart:io';
 
+import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/models/create_poll_request.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/ui/common/heading_description_widget.dart';
 import 'package:bidders/ui/common/primary_button.dart';
+import 'package:bidders/ui/wohoo_page.dart';
 import 'package:bidders/utils/constants.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'create/options_page.dart';
-
 class DateTimePage extends StatefulWidget {
+  const DateTimePage({@required this.request});
+
+  final CreatePollRequest request;
+
   @override
   _DateTimePageState createState() => _DateTimePageState();
 }
@@ -31,9 +36,12 @@ class _DateTimePageState extends State<DateTimePage> {
   bool isStartDateTimeSelected = false;
   bool isEndDateTimeSelected = false;
 
+  PollBloc _pollBloc;
+
   @override
   void initState() {
     super.initState();
+    _pollBloc = PollBloc();
   }
 
   @override
@@ -254,14 +262,34 @@ class _DateTimePageState extends State<DateTimePage> {
 
   void _navigateToPage(BuildContext context) {
     if (hasDateEntered) {
-      Navigator.pushReplacement(
-        context,
-        RouteAnimationSlideFromRight(
-          widget: OptionsPage(),
-        ),
-      );
+      Utils.showLoader(context);
+      final pollTimeLeft = selectedEndDateTime.difference(DateTime.now());
+      //calculating time left for the poll to end
+      final durationFromNow = DateTime.now().add(pollTimeLeft);
+
+      final createPollRequest = widget.request
+          .copyWith(durationFromNow: durationFromNow, startTime: selectedStartDateTime);
+      _pollBloc
+          .createPoll(
+              description: createPollRequest.description,
+              options: createPollRequest.options,
+              durationFromNow: durationFromNow,
+              pollImage: createPollRequest.pollImage)
+          .listen((event) {
+        Utils.hideLoader();
+        navigateToWohooPage(createPollRequest);
+      });
     } else {
       Utils.showErrorMessage(context, 'Please select date and time!');
     }
+  }
+
+  void navigateToWohooPage(CreatePollRequest createPollRequest) {
+    Navigator.pushReplacement(
+      context,
+      RouteAnimationSlideFromRight(
+        widget: WohooPage(createPollRequest: createPollRequest),
+      ),
+    );
   }
 }
