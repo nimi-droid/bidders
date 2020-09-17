@@ -1,6 +1,5 @@
 import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
-import 'package:bidders/extensions/context_extension.dart';
 import 'package:bidders/models/poll.dart';
 import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
@@ -9,6 +8,8 @@ import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/home_feed/user_info_widget.dart';
 import 'package:bidders/ui/whats_about_page.dart';
 import 'package:bidders/utils/constants.dart';
+import 'package:bidders/utils/date_time_utils.dart';
+import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -28,16 +29,6 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
   void initState() {
     super.initState();
     _pollBloc = PollBloc();
-    /*_pollBloc.createPoll(
-      options: [
-        PollOption(statement: "FFDP", numberOfVotes: 0),
-        PollOption(statement: "Alter Bridge", numberOfVotes: 0)
-      ],
-      description: "Best Band ever?",
-      durationFromNow: DateTime.now().add(Duration(days: 1)),
-      pollImage: "",
-    );*/
-
     _pollBloc.fetchAllPolls();
   }
 
@@ -61,13 +52,10 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
             if (snapshot.hasData) {
               return ListView.separated(
                 separatorBuilder: (context, index) => const SizedBox(height: 10),
-                itemCount: 5,
+                itemCount: snapshot.data.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      context.showBetAmountBottomSheet();
-                    },
-                    child: PollItem()),
+                itemBuilder: (context, index) =>
+                    PollItem(poll: snapshot.data[index], voteOnPoll: onPollItemClicked),
               );
             } else {
               return Container();
@@ -184,10 +172,20 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
     );
   }
 
-  void onPollItemClicked() {}
+  void onPollItemClicked(String pollId, int choice, int pollPosition) {
+//    Utils.showLoader(context);
+//    _pollBloc.voteOnAPoll(pollId, choice, pollPosition);
+    Utils.showSuccessMessage(context, 'coming soon');
+  }
 }
 
 class PollItem extends StatelessWidget {
+  const PollItem({Key key, this.poll, this.voteOnPoll, this.itemPosition}) : super(key: key);
+
+  final Poll poll;
+  final Function(String pollId, int choice, int itemPosition) voteOnPoll;
+  final int itemPosition;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -197,17 +195,17 @@ class PollItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserInfoWidget(
-            sampleImageUrl,
-            "Nimish Nandwana",
-            "4 min ago",
+            poll.user.userImage,
+            poll.user.userName,
+            DateTimeUtils.timeAgoSinceDate(poll.createdAt),
             USER_INFO_TRAILING_WIDGET.poll,
             null,
           ),
-          SizedBox(height: 20),
-          Text(sampleQuestion, style: tsRegular1),
-          SizedBox(height: 17),
+          const SizedBox(height: 20),
+          Text(poll.description, style: tsRegular1),
+          const SizedBox(height: 17),
           getPollPercentageIndicator(),
-          SizedBox(height: 40),
+          const SizedBox(height: 40),
           StackedImagesVotesAndTimeLeft(votes: 4, recentPeople: getRecentPeopleList, timeLeft: 6)
         ],
       ),
@@ -215,37 +213,87 @@ class PollItem extends StatelessWidget {
   }
 
   Widget getPollPercentageIndicator() {
+    int totalParticipation = 0;
+
+    for (int i = 0; i < poll.options.length; i++) {
+      totalParticipation += poll.options[i].numberOfVotes;
+    }
+
     return ListView.separated(
-      itemCount: 2,
+      itemCount: poll.options.length,
       shrinkWrap: true,
       separatorBuilder: (context, position) => const SizedBox(height: 15),
-      itemBuilder: (context, position) => PollsPercentItem(),
+      itemBuilder: (context, position) => PollsPercentItem(
+        pollOption: poll.options[position],
+        ishigestVoted: true,
+        totalPollParticipantCount: totalParticipation,
+        showResults: poll.hasVoted,
+        position: position,
+        onItemClick: onOptionSelected,
+      ),
     );
+  }
+
+  void onOptionSelected(int position) {
+    if (poll.hasVoted) {
+      return;
+    }
+
+    voteOnPoll(poll.id, position, itemPosition);
   }
 }
 
 class PollsPercentItem extends StatelessWidget {
+  const PollsPercentItem(
+      {Key key,
+      this.pollOption,
+      this.totalPollParticipantCount,
+      this.ishigestVoted,
+      this.showResults,
+      this.position,
+      this.onItemClick})
+      : super(key: key);
+
+  final PollOption pollOption;
+  final int totalPollParticipantCount;
+  final bool ishigestVoted;
+  final bool showResults;
+  final int position;
+  final Function(int position) onItemClick;
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.centerLeft,
-      children: [
-        Container(
-          height: 38,
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(100)),
-            child: LinearProgressIndicator(
-              value: 0.7,
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
-              backgroundColor: AppColors.whiteOpacity15,
+    return InkWell(
+      onTap: () {
+        onItemClick(position);
+      },
+      child: Stack(
+        alignment: Alignment.centerLeft,
+        children: [
+          Container(
+            height: 38,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(100)),
+              child: LinearProgressIndicator(
+                value: pollOption.numberOfVotes != 0
+                    ? pollOption.numberOfVotes / totalPollParticipantCount
+                    : 0,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    ishigestVoted ? AppColors.white : AppColors.whiteOpacity30),
+                backgroundColor: AppColors.whiteOpacity15,
+              ),
             ),
           ),
-        ),
-        const Padding(
-          padding: const EdgeInsets.only(left: 21),
-          child: Text('Flutter (70%)', style: tsBoldDarkGrey),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 21),
+            child: showResults
+                ? Text(
+                    '${pollOption?.statement} (${pollOption.numberOfVotes ~/ totalPollParticipantCount * 100}%)',
+                    style: tsBoldDarkGrey)
+                : Text(pollOption?.statement, style: tsRegular1),
+          )
+        ],
+      ),
     );
   }
 }
