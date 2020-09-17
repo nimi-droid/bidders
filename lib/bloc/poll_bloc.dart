@@ -78,15 +78,15 @@ class PollBloc extends BaseBloc {
   /* GET ALL POLLS DATA */
   Future<List<Poll>> fetchAllPolls() async {
     final List<Poll> polls = [];
-    await fetchUser(firebaseAuth.currentUser.uid).then((user) => {
-          firestore.collection('polls').get().then((querySnapshot) {
+    await fetchUser(firebaseAuth.currentUser.uid).then((user) async {
+          await firestore.collection('polls').get().then((querySnapshot) {
             querySnapshot.docs.forEach((document) {
               polls.add(getPollFromDocumentData(
                 document,
                 user.votedPolls.containsKey(document.id),
               ));
             });
-          })
+          });
         });
     return polls;
   }
@@ -122,6 +122,9 @@ class PollBloc extends BaseBloc {
 
   List<PollVoter> getPollVoters(List<dynamic> data) {
     final pollVoters = <PollVoter>[];
+    if(data == null) {
+      return [];
+    }
     List.from(data).forEach((voter) {
       pollVoters.add(PollVoter(
         userId: voter['userId'],
