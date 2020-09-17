@@ -21,5 +21,16 @@ const logged_out_successfully = 'Logged out successfully!';
 
 const hintStartPoll = 'Start a poll..';
 
+
 /*Buttons*/
 const submit = 'Submit';
+
+/*Whats New*/
+const heading_whats_new = 'What’s new';
+const label_title_1 = 'Place bets';
+const label_subtitle_1 = 'Participate in interesting bets and check out the odds';
+const label_title_2 = 'Run polls';
+const label_subtitle_2 = 'Get opinions on any question with a few taps';
+const label_title_3 = 'Win money';
+const label_subtitle_3 = 'Play smartly and get money in your wallet';
+const btn_lets_go = 'Let’s Go!';

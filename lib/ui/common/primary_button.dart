@@ -26,7 +26,7 @@ class PrimaryButton extends StatelessWidget {
         child: Center(
           child: RichText(
             textAlign: TextAlign.center,
-            text: TextSpan(text: buttonText, style: Theme.of(context).textTheme.subtitle1),
+            text: TextSpan(text: buttonText, style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.w700)),
           ),
         ),
       ),
