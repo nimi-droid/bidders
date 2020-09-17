@@ -1,8 +1,12 @@
+import 'package:bidders/bloc/create_poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/models/create_poll_request.dart';
+import 'package:bidders/models/poll.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/common/heading_description_widget.dart';
 import 'package:bidders/ui/common/primary_button.dart';
+import 'package:bidders/ui/date_time_page.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,19 +15,26 @@ import 'package:flutter/material.dart';
 import 'enter_new_option_page.dart';
 
 class OptionsPage extends StatefulWidget {
+  const OptionsPage({@required this.createPollRequest, Key key}) : super(key: key);
+
+  final CreatePollRequest createPollRequest;
+
   @override
   _OptionsPageState createState() => _OptionsPageState();
 }
 
 class _OptionsPageState extends State<OptionsPage> with OptionsListener {
-  double _screenWidth, _screenHeight;
+  double _screenWidth;
+  final CreatePollBloc _createPollBloc = CreatePollBloc();
 
-  List<String> optionsList = [];
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     _screenWidth = MediaQuery.of(context).size.width;
-    _screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
@@ -38,10 +49,15 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 40,
-                      color: AppColors.white,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 40,
+                        color: AppColors.white,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 53),
@@ -57,11 +73,20 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, bottom: 30),
-              child: AnimatedOpacity(
-                opacity: optionsList.length >= 2 ? 1.0 : 0.2,
-                duration: const Duration(milliseconds: 200),
-                child: PrimaryButton(buttonText: 'Next', onButtonPressed: moveToNextPage),
-              ),
+              child: StreamBuilder<List<String>>(
+                  stream: _createPollBloc.getPollsListStream,
+                  builder: (context, snapshot) {
+                    final listSize = snapshot.data?.length ?? 0;
+                    return AnimatedOpacity(
+                      opacity: listSize >= 2 ? 1.0 : 0.2,
+                      duration: const Duration(milliseconds: 200),
+                      child: PrimaryButton(
+                          buttonText: 'Next',
+                          onButtonPressed: () {
+                            moveToNextPage(snapshot.data);
+                          }),
+                    );
+                  }),
             )
           ],
         ),
@@ -97,29 +122,35 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
 
   @override
   void onOptionAdded(String option) {
-    setState(() {
-      optionsList.add(option);
-    });
+    _createPollBloc.addOption(option);
   }
 
   Widget getOptionsListWidget() {
     return Expanded(
-      child: ListView.separated(
-        itemCount: optionsList.length,
-        physics: const NeverScrollableScrollPhysics(),
-        separatorBuilder: (context, position) => const SizedBox(height: 20),
-        itemBuilder: (context, position) {
-          return OptionsItem(
-              optionText: optionsList[position], onCrossTapped: removeOptionItem, index: position);
-        },
-      ),
+      child: StreamBuilder<List<String>>(
+          stream: _createPollBloc.getPollsListStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return ListView.separated(
+                itemCount: snapshot.data.length,
+                physics: const NeverScrollableScrollPhysics(),
+                separatorBuilder: (context, position) => const SizedBox(height: 20),
+                itemBuilder: (context, position) {
+                  return OptionsItem(
+                      optionText: snapshot.data[position],
+                      onCrossTapped: removeOptionItem,
+                      index: position);
+                },
+              );
+            } else {
+              return Container();
+            }
+          }),
     );
   }
 
   void removeOptionItem(int index) {
-    setState(() {
-      optionsList.removeAt(index);
-    });
+    _createPollBloc.removeOption(index);
   }
 
   void moveToAddOptionPage() {
@@ -129,9 +160,15 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
     )));
   }
 
-  void moveToNextPage() {
+  void moveToNextPage(List<String> optionsList) {
     if (optionsList.length >= 2) {
-      Utils.showSuccessMessage(context, 'Coming soon');
+      final List<PollOption> options = [];
+      for (String option in optionsList) {
+        options.add(PollOption(statement: option, numberOfVotes: 0, pollVoters: []));
+      }
+
+      final request = widget.createPollRequest.copyWith(options: options);
+      Navigator.push(context, RouteAnimationSlideFromRight(widget: DateTimePage(request: request)));
     } else {
       Utils.showErrorMessage(context, 'Please add minimum 2 options');
     }

@@ -3,6 +3,7 @@ import 'package:bidders/models/poll.dart';
 import 'package:bidders/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PollBloc extends BaseBloc {
@@ -25,10 +26,10 @@ class PollBloc extends BaseBloc {
 
   /* CREATING POLL */
   Stream<DocumentReference> createPoll({
-    String description,
-    DateTime durationFromNow, //DateTime.now().add(DateTime(hours: 24))
-    List<PollOption> options,
-    String pollImage,
+    @required String description,
+    @required DateTime durationFromNow, //DateTime.now().add(DateTime(hours: 24))
+    @required List<PollOption> options,
+    @required String pollImage,
   }) {
     return firestore.collection('polls').add({
       'createdAt': DateTime.now(),
