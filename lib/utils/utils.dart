@@ -66,7 +66,7 @@ class Utils {
     }
   }
 
-  static void showLoader(BuildContext context, String message) {
+  static void showLoader(BuildContext context) {
     if (!_isLoaderShowing) {
       _isLoaderShowing = true;
       _loaderContext = context;
