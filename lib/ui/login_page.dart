@@ -1,8 +1,8 @@
+import 'package:bidders/bloc/login_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/ui/home_page.dart';
 import 'package:bidders/utils/utils.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -18,12 +18,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double _screenWidth, _screenHeight;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final fireStoreInstance = FirebaseFirestore.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  LoginBloc _loginBloc;
 
   @override
   void initState() {
     super.initState();
+    _loginBloc = LoginBloc();
     Utils.hideKeyBoard();
   }
 
@@ -124,22 +125,11 @@ class _LoginPageState extends State<LoginPage> {
     final User user = authResult.user;
     if (user != null) {
       //final User currentUser = _auth.currentUser;
-      saveUserToFireStore(
+      _loginBloc.saveUserToFireStore(
           user, googleSignInAuthentication.accessToken, googleSignInAuthentication.idToken);
       print('signInWithGoogle succeeded: $user');
       return user;
     }
     return null;
-  }
-
-  void saveUserToFireStore(User user, String accessToken, String idToken) {
-    fireStoreInstance.collection('users').doc(user.uid).set({
-      'name': user.displayName,
-      'email': user.email,
-      'image': user.photoURL,
-      'phoneNumber': user.phoneNumber,
-      'accessToken': accessToken,
-      'idToken': idToken,
-    }).then((_) {});
   }
 }

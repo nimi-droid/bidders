@@ -14,8 +14,6 @@ abstract class BaseBloc {
 
   Stream<dynamic> get onSuccess => onSuccessBS.stream;
 
-  void onInit(BuildContext context);
-
   void onDispose() {
     isLoadingBS.close();
     onErrorBS.close();
