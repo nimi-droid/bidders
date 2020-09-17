@@ -20,3 +20,6 @@ const loading = 'Loading';
 const logged_out_successfully = 'Logged out successfully!';
 
 const hintStartPoll = 'Start a poll..';
+
+/*Buttons*/
+const submit = 'Submit';

@@ -86,8 +86,8 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('+', style: tsBoldButtonPrimary1.copyWith(fontSize: 21)),
-              Text(' Add Option', style: tsBoldButtonPrimary1),
+              Text('+', style: tsRegular1.copyWith(fontSize: 21)),
+              Text(' Add Option', style: tsRegular1),
             ],
           ),
         ),
@@ -160,7 +160,7 @@ class OptionsItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(optionText, style: tsBoldButtonPrimary1),
+          Text(optionText, style: tsRegular1),
           InkWell(
               onTap: () => onCrossTapped(index), child: Icon(Icons.close, color: AppColors.white))
         ],

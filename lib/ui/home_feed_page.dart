@@ -1,8 +1,10 @@
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/extensions/context_extension.dart';
 import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
+import 'package:bidders/ui/home_feed/user_info_widget.dart';
 import 'package:bidders/ui/whats_about_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,11 @@ class HomeFeedPage extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(height: 10),
         itemCount: 3,
         shrinkWrap: true,
-        itemBuilder: (context, index) => PollItem(),
+        itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              context.showBetAmountBottomSheet();
+            },
+            child: PollItem()),
       ),
     );
   }
@@ -50,7 +56,7 @@ class HomeFeedPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                     text: const TextSpan(
                       text: 'Grappus',
-                      style: tsBoldButtonPrimary1,
+                      style: tsRegular1,
                     ),
                   ),
                   Container(
@@ -63,7 +69,7 @@ class HomeFeedPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                       text: const TextSpan(
                         text: 'BET',
-                        style: tsBoldButtonPrimary1,
+                        style: tsRegular1,
                       ),
                     ),
                   )
@@ -99,8 +105,7 @@ class HomeFeedPage extends StatelessWidget {
               children: [
                 CircularImageView(url: sampleImageUrl, callBack: null),
                 const SizedBox(width: 11),
-                Text(hintStartPoll,
-                    style: tsBoldButtonPrimary1.copyWith(color: AppColors.whiteOpacity30)),
+                Text(hintStartPoll, style: tsRegular1.copyWith(color: AppColors.whiteOpacity30)),
                 const SizedBox(width: 27),
               ],
             ),
@@ -130,9 +135,15 @@ class PollItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          informationWidget(sampleImageUrl, "Nimish Nandwana", "4 min ago"),
+          UserInfoWidget(
+            sampleImageUrl,
+            "Nimish Nandwana",
+            "4 min ago",
+            USER_INFO_TRAILING_WIDGET.poll,
+            null,
+          ),
           SizedBox(height: 20),
-          Text(sampleQuestion, style: tsBoldButtonPrimary1),
+          Text(sampleQuestion, style: tsRegular1),
           SizedBox(height: 17),
           getPollPercentageIndicator(),
           SizedBox(height: 40),
@@ -160,40 +171,6 @@ class PollItem extends StatelessWidget {
         const Padding(
           padding: const EdgeInsets.only(left: 21),
           child: Text('Flutter (70%)', style: tsBoldDarkGrey),
-        )
-      ],
-    );
-  }
-
-  Widget informationWidget(String imageUrl, String heading, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              CircularImageView(url: imageUrl, callBack: null),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(heading, style: tsBoldWhite14),
-                    Text(value, style: tsBoldWhite12.copyWith(color: AppColors.whiteOpacity60)),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 6),
-          padding: const EdgeInsets.only(top: 3, bottom: 3, left: 13, right: 13),
-          decoration: const BoxDecoration(
-            color: AppColors.strongPink,
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-          ),
-          child: const Text('POLL', style: tsBoldWhite10),
         )
       ],
     );
