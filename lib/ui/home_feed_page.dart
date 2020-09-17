@@ -1,6 +1,7 @@
 import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/extensions/context_extension.dart';
+import 'package:bidders/models/poll.dart';
 import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
@@ -36,7 +37,7 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
       durationFromNow: DateTime.now().add(Duration(days: 1)),
       pollImage: "",
     );*/
-    
+
     _pollBloc.fetchAllPolls();
   }
 
@@ -54,16 +55,24 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
 
   Widget getPollWidget() {
     return Expanded(
-      child: ListView.separated(
-        separatorBuilder: (context, index) => const SizedBox(height: 10),
-        itemCount: 3,
-        shrinkWrap: true,
-        itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              context.showBetAmountBottomSheet();
-            },
-            child: PollItem()),
-      ),
+      child: StreamBuilder<List<Poll>>(
+          stream: _pollBloc.getPollsListStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(height: 10),
+                itemCount: 5,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      context.showBetAmountBottomSheet();
+                    },
+                    child: PollItem()),
+              );
+            } else {
+              return Container();
+            }
+          }),
     );
   }
 
@@ -174,6 +183,8 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
       ),
     );
   }
+
+  void onPollItemClicked() {}
 }
 
 class PollItem extends StatelessWidget {
@@ -204,6 +215,18 @@ class PollItem extends StatelessWidget {
   }
 
   Widget getPollPercentageIndicator() {
+    return ListView.separated(
+      itemCount: 2,
+      shrinkWrap: true,
+      separatorBuilder: (context, position) => const SizedBox(height: 15),
+      itemBuilder: (context, position) => PollsPercentItem(),
+    );
+  }
+}
+
+class PollsPercentItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.centerLeft,
       children: [
