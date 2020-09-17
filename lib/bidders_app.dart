@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'res/app_colors.dart';
 import 'routes.dart';
 import 'utils/log.dart';
-import 'utils/shared_preferences.dart';
+import 'utils/pref_utils.dart';
 import 'utils/utils.dart';
 
 class BiddersApp extends StatelessWidget {
@@ -40,7 +40,7 @@ class BiddersApp extends StatelessWidget {
 
   Future<void> _initDependencies() async {
     Log.init();
-    await Prefs.init();
+    await PrefUtils.init();
     await Firebase.initializeApp();
   }
 }

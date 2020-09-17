@@ -1,3 +1,4 @@
+import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/extensions/context_extension.dart';
 import 'package:bidders/network/response/recent_people.dart';
@@ -14,7 +15,31 @@ import 'common/circular_image_view.dart';
 import 'common/stacked_images.dart';
 import 'leaderboard/leaderboard_page.dart';
 
-class HomeFeedPage extends StatelessWidget {
+class HomeFeedPage extends StatefulWidget {
+  @override
+  _HomeFeedPageState createState() => _HomeFeedPageState();
+}
+
+class _HomeFeedPageState extends State<HomeFeedPage> {
+  PollBloc _pollBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _pollBloc = PollBloc();
+    /*_pollBloc.createPoll(
+      options: [
+        PollOption(statement: "FFDP", numberOfVotes: 0),
+        PollOption(statement: "Alter Bridge", numberOfVotes: 0)
+      ],
+      description: "Best Band ever?",
+      durationFromNow: DateTime.now().add(Duration(days: 1)),
+      pollImage: "",
+    );*/
+    
+    _pollBloc.fetchAllPolls();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

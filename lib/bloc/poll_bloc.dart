@@ -1,25 +1,33 @@
 import 'package:bidders/bloc/base_bloc.dart';
 import 'package:bidders/models/poll.dart';
+import 'package:bidders/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PollBloc extends BaseBloc {
   FirebaseFirestore firestore;
+  FirebaseAuth firebaseAuth;
 
   PollBloc() {
     firestore = FirebaseFirestore.instance;
+    firebaseAuth = FirebaseAuth.instance;
   }
 
   /* CREATING POLL */
-  void createPoll(
-      String title, DateTime durationFromNow, List<PollOption> options, String pollImage) {
-    firestore.collection('polls').add({
+  Stream<DocumentReference> createPoll({
+    String description,
+    DateTime durationFromNow, //DateTime.now().add(DateTime(hours: 24))
+    List<PollOption> options,
+    String pollImage,
+  }) {
+    return firestore.collection('polls').add({
       'createdAt': DateTime.now(),
       'createdBy': getPollCreatorMap(),
-      'description': title,
+      'description': description,
       'options': getOptionsFirestoreMapping(options),
       'endTime': durationFromNow,
       'image': pollImage
-    });
+    }).asStream();
   }
 
   Map<String, dynamic> getOptionsFirestoreMapping(List<PollOption> pollOptions) {
@@ -32,70 +40,82 @@ class PollBloc extends BaseBloc {
   }
 
   Map<String, dynamic> getPollCreatorMap() {
-    //TODO: This info will belong to the creator of the poll i.e. current user
     return {
-      'userId' : 'Solid IDS',
-      'userImage' : '',
-      'userName' : 'Anthony'
+      'userId': firebaseAuth.currentUser.uid,
+      'userImage': firebaseAuth.currentUser.photoURL,
+      'userName': firebaseAuth.currentUser.displayName,
     };
   }
 
   /* VOTING ON A POLL */
-  void voteOnAPoll(String pollId, int choice) {
-    firestore.collection('polls').doc("uolH3QCy2G8LMW4ht7zi").update({
-      "voters": FieldValue.arrayUnion([
-        {
-          "choice": choice,
-          "userId": "SomeRandomUserId",
-          "userImage": "link of image here",
-          "userName": "Waddup Boisss"
-        }
-      ]),
-    });
-
-    firestore.runTransaction((transaction) async {
-      DocumentReference pollRef = firestore.collection('polls').doc("uolH3QCy2G8LMW4ht7zi");
+  Future<Poll> voteOnAPoll(String pollId, int choice) async {
+    await firestore.runTransaction((transaction) async {
+      DocumentReference pollRef = firestore.collection('polls').doc(pollId);
+      DocumentReference userRef = firestore.collection('users').doc(firebaseAuth.currentUser.uid);
       DocumentSnapshot snapshot = await transaction.get(pollRef);
       int currentVotersCount = snapshot.data()['options'][choice.toString()]['numberOfVotes'];
-      await transaction
-          .update(pollRef, {'options.${choice.toString()}.numberOfVotes': currentVotersCount + 1});
+      transaction.update(pollRef, {
+        'options.${choice.toString()}.numberOfVotes': currentVotersCount + 1,
+        'options.${choice.toString()}.voters': FieldValue.arrayUnion([
+          {
+            'userId': firebaseAuth.currentUser.uid,
+            'userImage': firebaseAuth.currentUser.photoURL,
+            'userName': firebaseAuth.currentUser.displayName
+          }
+        ]),
+      });
+      transaction.update(userRef, {'votedPolls.${pollId}': choice});
     });
+    
+    var updatedPoll;
+    await firestore.collection('polls').doc(pollId).get().then((poll) => {
+      updatedPoll = getPollFromDocumentData(poll, true)
+    });
+
+    return updatedPoll;
   }
 
   /* GET ALL POLLS DATA */
-  List<Poll> fetchAllPolls() {
-    List<Poll> polls = List();
-    firestore.collection('polls').get().then((querySnapshot) {
-      querySnapshot.docs.forEach((document) {
-        polls.add(getPollFromDocumentData(document.data()));
-      });
-    });
+  Future<List<Poll>> fetchAllPolls() async {
+    final List<Poll> polls = [];
+    await fetchUser(firebaseAuth.currentUser.uid).then((user) => {
+          firestore.collection('polls').get().then((querySnapshot) {
+            querySnapshot.docs.forEach((document) {
+              polls.add(getPollFromDocumentData(
+                document,
+                user.votedPolls.containsKey(document.id),
+              ));
+            });
+          })
+        });
     return polls;
   }
 
-  Poll getPollFromDocumentData(Map<String, dynamic> data) {
-    var poll = Poll(
-        createdAt: data["createdAt"].toDate(),
-        description: data["description"],
-        options: getPollOptions(data['options']),
-        imageUrl: data["image"],
-        user: PollCreator(
-          userId: data['createdBy']['userId'],
-          userImage: data['createdBy']['userImage'],
-          userName: data['createdBy']['userName'],
-        ),
-        endTime: data["endTime"].toDate(),
-        voters: getPollVoters(data['voters']));
-    return poll;
+  Poll getPollFromDocumentData(QueryDocumentSnapshot document, bool hasUserVoted) {
+    final data = document.data();
+    return Poll(
+      id: document.id,
+      createdAt: data['createdAt'].toDate(),
+      description: data['description'],
+      options: getPollOptions(data['options']),
+      imageUrl: data['image'],
+      user: PollCreator(
+        userId: data['createdBy']['userId'],
+        userImage: data['createdBy']['userImage'],
+        userName: data['createdBy']['userName'],
+      ),
+      endTime: data['endTime'].toDate(),
+      hasVoted: hasUserVoted,
+    );
   }
 
   List<PollOption> getPollOptions(Map<String, dynamic> data) {
     final pollOptions = <PollOption>[];
     data.keys.forEach((key) {
       pollOptions.add(PollOption(
-        statement: data[key]["statement"],
-        numberOfVotes: data[key]["numberOfVotes"],
-      ));
+          statement: data[key]['statement'],
+          numberOfVotes: data[key]['numberOfVotes'],
+          pollVoters: getPollVoters(data[key]['voters'])));
     });
     return pollOptions;
   }
@@ -104,12 +124,35 @@ class PollBloc extends BaseBloc {
     final pollVoters = <PollVoter>[];
     List.from(data).forEach((voter) {
       pollVoters.add(PollVoter(
-        choice: voter['choice'],
         userId: voter['userId'],
         userName: voter['userName'],
         userImage: voter['userImage'],
       ));
     });
     return pollVoters;
+  }
+
+  bool hasCurrentUserVoted(List<PollVoter> pollVoters) {
+    final voter = pollVoters.firstWhere(
+      (element) => element.userId == firebaseAuth.currentUser.uid,
+      orElse: () => null,
+    );
+
+    return voter != null;
+  }
+
+  /* GET USER DATA */
+  Future<AppUser> fetchUser(String userId) async {
+    var user;
+    await firestore.collection('users').doc(userId).get().then((document) => {
+          user = AppUser(
+            id: userId,
+            email: document.data()['email'],
+            image: document.data()['image'],
+            votedPolls: document.data()['votedPolls'],
+          )
+        });
+
+    return user;
   }
 }

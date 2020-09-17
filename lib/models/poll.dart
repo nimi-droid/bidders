@@ -1,30 +1,31 @@
 class Poll {
+  String id;
   DateTime createdAt;
-  DateTime startTime;
   DateTime endTime;
-  PollCreator user; //Could be an user object too
+  PollCreator user;
   String description;
   String imageUrl;
   List<PollOption> options;
-  List<PollVoter> voters;
+  bool hasVoted;
 
   Poll({
+    this.id,
     this.createdAt,
-    this.startTime,
     this.endTime,
     this.user,
     this.description,
     this.imageUrl,
     this.options,
-    this.voters,
+    this.hasVoted,
   });
 }
 
 class PollOption {
   String statement;
   int numberOfVotes;
+  List<PollVoter> pollVoters;
 
-  PollOption({this.statement, this.numberOfVotes});
+  PollOption({this.statement, this.numberOfVotes, this.pollVoters});
 }
 
 class PollVoter {

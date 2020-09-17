@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../routes.dart';
+import '../utils/pref_utils.dart';
 import 'common/primary_button.dart';
+import 'home_feed_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -104,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.pushReplacement(
       context,
       RouteAnimationSlideFromRight(
-        widget: HomePage(),
+        widget: HomeFeedPage(),
         routeName: RouteNames.home,
       ),
     );
@@ -125,8 +127,10 @@ class _LoginPageState extends State<LoginPage> {
     final User user = authResult.user;
     if (user != null) {
       //final User currentUser = _auth.currentUser;
-      _loginBloc.saveUserToFireStore(
-          user, googleSignInAuthentication.accessToken, googleSignInAuthentication.idToken);
+      await _loginBloc
+          .saveUserToFireStore(
+              user, googleSignInAuthentication.accessToken, googleSignInAuthentication.idToken)
+          .then((value) => PrefUtils.setUserToken(googleSignInAuthentication.accessToken));
       print('signInWithGoogle succeeded: $user');
       return user;
     }

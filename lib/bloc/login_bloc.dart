@@ -12,14 +12,14 @@ class LoginBloc extends BaseBloc {
     firestore = FirebaseFirestore.instance;
   }
 
-  void saveUserToFireStore(User user, String accessToken, String idToken) {
-    firestore.collection('users').doc(user.uid).set({
+  Future<dynamic> saveUserToFireStore(User user, String accessToken, String idToken) {
+    return firestore.collection('users').doc(user.uid).set({
       'name': user.displayName,
       'email': user.email,
       'image': user.photoURL,
       'phoneNumber': user.phoneNumber,
       'accessToken': accessToken,
       'idToken': idToken,
-    }).then((_) {});
+    });
   }
 }

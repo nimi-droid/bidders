@@ -7,7 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes.dart';
+import '../../utils/pref_utils.dart';
+import '../../utils/pref_utils.dart';
 import '../home_feed_page.dart';
+import '../login_page.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -74,8 +77,8 @@ class _SplashPageState extends State<SplashPage> {
       context,
       RouteAnimationSlideFromRight(
 //        widget: LoginPage(),
-        widget: HomeFeedPage(),
-        routeName: RouteNames.login,
+        widget: PrefUtils.getUserToken() != null ? HomeFeedPage() : LoginPage(),
+        routeName: PrefUtils.getUserToken() != null ? RouteNames.home : RouteNames.login,
       ),
     );
   }
