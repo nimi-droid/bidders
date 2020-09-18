@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utils/utils.dart';
+import 'custom_cupertino_page_transition.dart';
 
 class BasePageRouteBuilder extends PageRouteBuilder {
   BasePageRouteBuilder({this.routeName});
@@ -63,16 +64,19 @@ class RouteAnimationNoneWithDuration extends PageRouteBuilder {
 }
 
 class RouteAnimationSlideFromRight extends PageRouteBuilder {
-  RouteAnimationSlideFromRight({this.widget, this.routeName, this.shouldMaintainState = true})
-      : super(pageBuilder: (context, animation, secondaryAnimation) {
+  RouteAnimationSlideFromRight({
+    this.widget,
+    this.routeName,
+    this.shouldMaintainState = true,
+  }) : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
         }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1, 0),
-              end: Offset.zero,
-            ).animate(animation),
+          return CustomCupertinoPageTransition(
+            primaryRouteAnimation: animation,
+            secondaryRouteAnimation: secondaryAnimation,
             child: child,
+            linearTransition: false,
+            isSlideFromRight: true,
           );
         });
 
@@ -128,5 +132,47 @@ class RouteAnimationFadeIn extends PageRouteBuilder {
         arguments: super.settings.arguments,
       );
     }
+  }
+}
+
+class RouteAnimationCupertinoSlideFromBottom extends PageRouteBuilder {
+  final Widget widget;
+  final String routeName;
+  final bool shouldMaintainState;
+  final bool shouldDisableExitAnimation;
+
+  RouteAnimationCupertinoSlideFromBottom({
+    @required this.widget,
+    this.routeName,
+    this.shouldMaintainState = true,
+    this.shouldDisableExitAnimation = false,
+  }) : super(pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return widget;
+        }, transitionsBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation, Widget child) {
+          return CustomCupertinoPageTransition(
+            primaryRouteAnimation: animation,
+            secondaryRouteAnimation: secondaryAnimation,
+            child: child,
+            linearTransition: false,
+            shouldDisableExitAnimation: shouldDisableExitAnimation,
+          );
+        });
+
+  @override
+  RouteSettings get settings {
+    if (Utils.isEmpty(routeName))
+      return super.settings;
+    else
+      return RouteSettings(
+        name: routeName,
+        arguments: super.settings.arguments,
+      );
+  }
+
+  @override
+  bool get maintainState {
+    return shouldMaintainState;
   }
 }

@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
             bottom: _screenHeight * .08,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Hero(
                 tag: hero_grappus,
@@ -114,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
+              SizedBox(height: _screenHeight * 0.1),
               Column(
                 children: [
                   RichText(
