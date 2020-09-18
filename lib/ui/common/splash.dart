@@ -80,7 +80,7 @@ class _SplashPageState extends State<SplashPage> {
                                   child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
-                                      text: 'BET',
+                                      text: 'BOL',
                                       style: Theme.of(context).textTheme.headline3,
                                     ),
                                   ),
@@ -114,7 +114,7 @@ class _SplashPageState extends State<SplashPage> {
                                   child: RichText(
                                     textAlign: TextAlign.center,
                                     text: TextSpan(
-                                      text: 'BET',
+                                      text: 'BOL',
                                       style: Theme.of(context).textTheme.headline3,
                                     ),
                                   ),
