@@ -21,7 +21,7 @@ class BasePageRouteBuilder extends PageRouteBuilder {
 }
 
 class RouteAnimationNone extends PageRouteBuilder {
-  RouteAnimationNone({@required this.widget})
+  RouteAnimationNone({@required this.widget, this.routeName})
       : super(pageBuilder: (context, animation, secondaryAnimation) {
           return widget;
         }, transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -29,6 +29,19 @@ class RouteAnimationNone extends PageRouteBuilder {
         });
 
   final Widget widget;
+  final String routeName;
+
+  @override
+  RouteSettings get settings {
+    if (Utils.isEmpty(routeName)) {
+      return super.settings;
+    } else {
+      return RouteSettings(
+        name: routeName,
+        arguments: super.settings.arguments,
+      );
+    }
+  }
 
   @override
   Duration get transitionDuration => const Duration(milliseconds: 500);

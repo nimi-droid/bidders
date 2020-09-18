@@ -1,7 +1,7 @@
 import 'package:bidders/bloc/login_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/res/app_colors.dart';
-import 'package:bidders/ui/home_page.dart';
+import 'package:bidders/res/strings.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,38 +38,81 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: AppColors.primaryColor,
         body: Padding(
           padding: EdgeInsets.only(
-              left: _screenWidth * .11,
-              right: _screenWidth * .11,
-              top: _screenHeight * .092,
-              bottom: _screenHeight * .08),
+            left: _screenWidth * .11,
+            right: _screenWidth * .11,
+            top: _screenHeight * .092,
+            bottom: _screenHeight * .08,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Grappus',
-                      style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
+              Hero(
+                tag: hero_grappus,
+                child: Stack(
+                  children: [
+                    //duplicated name rows to get the smooth hero transition
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Opacity(
+                          opacity: 0,
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'Grappus',
+                              style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 13),
+                        Container(
+                          padding: const EdgeInsets.only(top: 7, bottom: 7, left: 10, right: 10),
+                          decoration: const BoxDecoration(
+                            color: AppColors.blueColor,
+                            borderRadius: BorderRadius.all(Radius.circular(11)),
+                          ),
+                          child: Opacity(
+                            opacity: 0,
+                            child: RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: 'BET',
+                                style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 7, bottom: 7, left: 10, right: 10),
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: const BoxDecoration(
-                        color: AppColors.blueColor,
-                        borderRadius: BorderRadius.all(Radius.circular(11))),
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: 'BET',
-                        style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: 'Grappus',
+                            style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
+                          ),
+                        ),
+                        const SizedBox(width: 13),
+                        Container(
+                          padding: const EdgeInsets.only(top: 7, bottom: 7, left: 10, right: 10),
+                          decoration: const BoxDecoration(
+                            color: AppColors.colorTransparent,
+                            borderRadius: BorderRadius.all(Radius.circular(11)),
+                          ),
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'BET',
+                              style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
+                  ],
+                ),
               ),
               Column(
                 children: [
