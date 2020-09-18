@@ -20,6 +20,10 @@ class PollBloc extends BaseBloc {
 
   Stream<List<Poll>> get getPollsListStream => _getPollsSuccessBS.stream;
 
+  final _getAppUsersSuccessBS = BehaviorSubject<AppUser>();
+
+  Stream<AppUser> get getAppUserStream => _getAppUsersSuccessBS.stream;
+
   List<Poll> pollsList = [];
 
   @override

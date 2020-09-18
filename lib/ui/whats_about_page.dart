@@ -39,13 +39,13 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
           children: <Widget>[
             Align(
               alignment: Alignment.topLeft,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                  padding: EdgeInsets.only(left: _screenWidth * 0.10, right: _screenWidth * 0.10),
+              child: Container(
+                margin: EdgeInsets.only(top: _screenWidth * 0.094),
+                padding: const EdgeInsets.only(left: 15, right: 20),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
                   child: const Icon(
                     Icons.arrow_back,
                     size: 40,
@@ -56,11 +56,8 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
             ),
             SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.only(
-                    left: _screenWidth * 0.10,
-                    right: _screenWidth * 0.10,
-                    bottom: 50,
-                    top: _screenHeight * 0.29),
+                padding:
+                    EdgeInsets.only(left: 20, right: 20, bottom: 50, top: _screenHeight * 0.29),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,6 +71,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
                     ),
                     TextFormField(
                       controller: _textController,
+                      autofocus: true,
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,
                       onFieldSubmitted: (text) => _navigateToPage(context),
