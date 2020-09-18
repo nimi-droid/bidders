@@ -59,8 +59,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
                 ),
                 SingleChildScrollView(
                   child: Container(
-                    margin:
-                        EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.13),
+                    margin: EdgeInsets.only(left: 25, right: 25, top: _screenHeight * 0.13),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
