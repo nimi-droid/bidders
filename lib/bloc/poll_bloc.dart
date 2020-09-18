@@ -82,13 +82,14 @@ class PollBloc extends BaseBloc {
     });
 
     Poll updatedPoll;
-    await firestore
-        .collection('polls')
-        .doc(pollId)
-        .get()
-        .then((poll) => {updatedPoll = getPollFromDocumentData(poll, true)});
+    await firestore.collection('polls').doc(pollId).get().then((poll) {
+      dynamic queryPoll = getPollFromDocumentData(poll, true);
+      updatedPoll = queryPoll as Poll;
+    });
 
-    pollsList.insert(pollPosition, updatedPoll);
+    pollsList
+      ..removeAt(pollPosition)
+      ..insert(pollPosition, updatedPoll);
     Utils.hideLoader();
     _getPollsSuccessBS.add(pollsList);
   }
@@ -101,18 +102,21 @@ class PollBloc extends BaseBloc {
         querySnapshot.docs.forEach((document) {
           polls.add(getPollFromDocumentData(
             document,
-            user.votedPolls.containsKey(document.id),
+            user.votedPolls?.containsKey(document.id) ?? false,
           ));
         });
       });
     });
-    //reversing the list also
-    pollsList.clear();
-    pollsList.addAll(polls.reversed.toList());
+
+    //showing the most recent poll first
+    pollsList
+      ..clear()
+      ..addAll(polls)
+      ..sort(Utils.comparePollsCreatedAt);
     _getPollsSuccessBS.add(pollsList);
   }
 
-  Poll getPollFromDocumentData(QueryDocumentSnapshot document, bool hasUserVoted) {
+  Poll getPollFromDocumentData(DocumentSnapshot document, bool hasUserVoted) {
     final data = document.data();
     return Poll(
       id: document.id,
