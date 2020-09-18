@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                text: 'BET',
+                                text: 'BOL',
                                 style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
                               ),
                             ),
@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: RichText(
                             textAlign: TextAlign.center,
                             text: TextSpan(
-                              text: 'BET',
+                              text: 'BOL',
                               style: Theme.of(context).textTheme.headline3.copyWith(fontSize: 32),
                             ),
                           ),

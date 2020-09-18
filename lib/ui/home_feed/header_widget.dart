@@ -1,10 +1,8 @@
-import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/models/user.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/common/circular_image_view.dart';
-import 'package:bidders/ui/leaderboard/leaderboard_page.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +43,7 @@ class HomeFeedHeader extends StatelessWidget {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: const TextSpan(
-                        text: 'BET',
+                        text: 'BOL',
                         style: tsRegular1,
                       ),
                     ),
@@ -85,8 +83,7 @@ class HomeFeedHeader extends StatelessWidget {
                         icon: const Icon(Icons.receipt, size: 15),
                         color: Colors.white,
                         onPressed: () {
-                          Navigator.push(
-                              context, RouteAnimationSlideFromRight(widget: LeaderBoardPage()));
+                          Utils.showSuccessMessage(context, coming_soon);
                         },
                       ),
                     ),
