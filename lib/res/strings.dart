@@ -33,3 +33,6 @@ const btn_lets_go = 'Let’s Go!';
 
 /*Buttons*/
 const submit = 'Submit';
+
+/*hero tags*/
+const hero_grappus = 'grappus';
