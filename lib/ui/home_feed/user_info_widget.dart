@@ -21,7 +21,10 @@ class UserInfoWidget extends StatelessWidget {
         Expanded(
           child: Row(
             children: [
-              CircularImageView(url: imageUrl, callBack: null),
+              CircularImageView(
+                url: imageUrl,
+                callBack: null,
+              ),
               const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

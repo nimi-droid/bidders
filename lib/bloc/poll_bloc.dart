@@ -1,6 +1,7 @@
 import 'package:bidders/bloc/base_bloc.dart';
 import 'package:bidders/models/poll.dart';
 import 'package:bidders/models/user.dart';
+import 'package:bidders/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,8 @@ class PollBloc extends BaseBloc {
   final _getPollsSuccessBS = BehaviorSubject<List<Poll>>();
 
   Stream<List<Poll>> get getPollsListStream => _getPollsSuccessBS.stream;
+
+  List<Poll> pollsList = [];
 
   @override
   void onDispose() {
@@ -59,7 +62,7 @@ class PollBloc extends BaseBloc {
   }
 
   /* VOTING ON A POLL */
-  Future<Poll> voteOnAPoll(String pollId, int choice) async {
+  Future<void> voteOnAPoll(String pollId, int choice, int pollPosition) async {
     await firestore.runTransaction((transaction) async {
       DocumentReference pollRef = firestore.collection('polls').doc(pollId);
       DocumentReference userRef = firestore.collection('users').doc(firebaseAuth.currentUser.uid);
@@ -78,30 +81,35 @@ class PollBloc extends BaseBloc {
       transaction.update(userRef, {'votedPolls.${pollId}': choice});
     });
 
-    var updatedPoll;
+    Poll updatedPoll;
     await firestore
         .collection('polls')
         .doc(pollId)
         .get()
         .then((poll) => {updatedPoll = getPollFromDocumentData(poll, true)});
 
-    return updatedPoll;
+    pollsList.insert(pollPosition, updatedPoll);
+    Utils.hideLoader();
+    _getPollsSuccessBS.add(pollsList);
   }
 
   /* GET ALL POLLS DATA */
   Future<void> fetchAllPolls() async {
     final List<Poll> polls = [];
     await fetchUser(firebaseAuth.currentUser.uid).then((user) async {
-          await firestore.collection('polls').get().then((querySnapshot) {
-            querySnapshot.docs.forEach((document) {
-              polls.add(getPollFromDocumentData(
-                document,
-                user.votedPolls.containsKey(document.id),
-              ));
-            });
-          });
+      await firestore.collection('polls').get().then((querySnapshot) {
+        querySnapshot.docs.forEach((document) {
+          polls.add(getPollFromDocumentData(
+            document,
+            user.votedPolls.containsKey(document.id),
+          ));
         });
-    _getPollsSuccessBS.add(polls);
+      });
+    });
+    //reversing the list also
+    pollsList.clear();
+    pollsList.addAll(polls.reversed.toList());
+    _getPollsSuccessBS.add(pollsList);
   }
 
   Poll getPollFromDocumentData(QueryDocumentSnapshot document, bool hasUserVoted) {
@@ -135,7 +143,7 @@ class PollBloc extends BaseBloc {
 
   List<PollVoter> getPollVoters(List<dynamic> data) {
     final pollVoters = <PollVoter>[];
-    if(data == null) {
+    if (data == null) {
       return [];
     }
     List.from(data).forEach((voter) {
