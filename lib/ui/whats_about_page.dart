@@ -44,7 +44,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
                   alignment: Alignment.topLeft,
                   child: Container(
                     margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                    padding: const EdgeInsets.only(left: 22, right: 25),
+                    padding: const EdgeInsets.only(left: 14, right: 25),
                     child: IconButton(
                       onPressed: () {
                         Navigator.pop(context);
@@ -126,6 +126,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
         RouteAnimationSlideFromRight(
           widget: OptionsPage(createPollRequest: request),
           routeName: RouteNames.dateTime,
+          shouldMaintainState: true,
         ),
       );
     } else {
