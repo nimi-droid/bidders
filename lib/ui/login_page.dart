@@ -1,5 +1,6 @@
 import 'package:bidders/bloc/login_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/custom_views/widget_animations.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:bidders/utils/utils.dart';
@@ -115,21 +116,24 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: _screenHeight * 0.1),
-              Column(
-                children: [
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Log in to your account',
-                      style: Theme.of(context).textTheme.subtitle1,
+              FadeInAnimation(
+                delay: 300,
+                child: Column(
+                  children: [
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'Log in to your account',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: _screenHeight * .033,
-                  ),
-                  PrimaryButton(
-                      buttonText: 'Continue with Google', onButtonPressed: _loginWithGoogle),
-                ],
+                    SizedBox(
+                      height: _screenHeight * .033,
+                    ),
+                    PrimaryButton(
+                        buttonText: 'Continue with Google', onButtonPressed: _loginWithGoogle),
+                  ],
+                ),
               )
             ],
           ),
