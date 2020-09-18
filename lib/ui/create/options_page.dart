@@ -39,7 +39,7 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: Padding(
-        padding: EdgeInsets.only(left: _screenWidth * 0.10, right: _screenWidth * 0.10),
+        padding: const EdgeInsets.only(left: 22, right: 25),
         child: Column(
           children: [
             Expanded(
@@ -55,7 +55,7 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
                       },
                       child: const Icon(
                         Icons.arrow_back,
-                        size: 40,
+                        size: 30,
                         color: AppColors.white,
                       ),
                     ),
@@ -189,7 +189,7 @@ class OptionsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 17, top: 17, bottom: 10, right: 23),
+      padding: const EdgeInsets.only(left: 17, top: 15, bottom: 15, right: 23),
       decoration: BoxDecoration(
         color: AppColors.white9,
         borderRadius: BorderRadius.circular(40),
