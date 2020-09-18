@@ -38,19 +38,18 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.light
                 .copyWith(systemNavigationBarColor: AppColors.primaryColor),
-            child: Stack(
-              alignment: Alignment.topLeft,
+            child: Column(
               children: <Widget>[
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
                     margin: EdgeInsets.only(top: _screenWidth * 0.094),
                     padding: const EdgeInsets.only(left: 22, right: 25),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
                       },
-                      child: const Icon(
+                      icon: const Icon(
                         Icons.arrow_back,
                         size: 30,
                         color: AppColors.white,
@@ -59,9 +58,9 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
                   ),
                 ),
                 SingleChildScrollView(
-                  child: Padding(
-                    padding:
-                        EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.29),
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.13),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,

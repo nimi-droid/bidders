@@ -49,11 +49,11 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                    child: InkWell(
-                      onTap: () {
+                    child: IconButton(
+                      onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Icon(
+                      icon: const Icon(
                         Icons.arrow_back,
                         size: 30,
                         color: AppColors.white,
