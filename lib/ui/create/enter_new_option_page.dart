@@ -65,6 +65,7 @@ class _NewOptionPageState extends State<NewOptionPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
+                      autofocus: true,
                       controller: _textController,
                       keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,

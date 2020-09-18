@@ -41,58 +41,84 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
 
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 22, right: 25),
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        size: 30,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 53),
-                  const HeadingDescriptionWidget(
-                    heading: 'And the options?',
-                    description: 'Enter the possible choices',
-                  ),
-                  getOptionsListWidget(),
-                  const SizedBox(height: 26),
-                  getAddOptionButton()
-                ],
+      body:
+          //duplicating back button to adjust padding without calculation.
+          //todo fix this
+          Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 14, right: 25),
+            child: Container(
+              margin: EdgeInsets.only(top: _screenWidth * 0.094),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.arrow_back,
+                  size: 30,
+                  color: AppColors.white,
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 30),
-              child: StreamBuilder<List<String>>(
-                  stream: _createPollBloc.getPollsListStream,
-                  builder: (context, snapshot) {
-                    final listSize = snapshot.data?.length ?? 0;
-                    return AnimatedOpacity(
-                      opacity: listSize >= 2 ? 1.0 : 0.2,
-                      duration: const Duration(milliseconds: 200),
-                      child: PrimaryButton(
-                          buttonText: 'Next',
-                          onButtonPressed: () {
-                            moveToNextPage(snapshot.data);
-                          }),
-                    );
-                  }),
-            )
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 22, right: 25),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Opacity(
+                        opacity: 0,
+                        child: Container(
+                          margin: EdgeInsets.only(top: _screenWidth * 0.094),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              size: 30,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 53),
+                      const HeadingDescriptionWidget(
+                        heading: 'And the options?',
+                        description: 'Enter the possible choices',
+                      ),
+                      getOptionsListWidget(),
+                      const SizedBox(height: 26),
+                      getAddOptionButton()
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, bottom: 30),
+                  child: StreamBuilder<List<String>>(
+                      stream: _createPollBloc.getPollsListStream,
+                      builder: (context, snapshot) {
+                        final listSize = snapshot.data?.length ?? 0;
+                        return AnimatedOpacity(
+                          opacity: listSize >= 2 ? 1.0 : 0.2,
+                          duration: const Duration(milliseconds: 200),
+                          child: PrimaryButton(
+                              buttonText: 'Next',
+                              onButtonPressed: () {
+                                moveToNextPage(snapshot.data);
+                              }),
+                        );
+                      }),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -216,7 +242,7 @@ class OptionsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 17, top: 15, bottom: 15, right: 23),
+      padding: const EdgeInsets.only(left: 17, top: 15, bottom: 15, right: 17),
       decoration: BoxDecoration(
         color: AppColors.white9,
         borderRadius: BorderRadius.circular(40),
