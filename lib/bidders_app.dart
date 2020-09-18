@@ -21,7 +21,7 @@ class BiddersApp extends StatelessWidget {
       statusBarBrightness: Brightness.light,
       systemNavigationBarColor: AppColors.primaryColor,
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
     ));
     return MaterialApp(
       builder: (context, child) {

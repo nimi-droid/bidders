@@ -48,21 +48,17 @@ class _NewOptionPageState extends State<NewOptionPage> {
                 onTap: () => Navigator.of(context).pop(),
                 child: Container(
                   margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                  padding: EdgeInsets.only(left: _screenWidth * 0.10, right: _screenWidth * 0.10),
+                  padding: const EdgeInsets.only(left: 22, right: 25),
                   child: const Icon(
                     Icons.close,
-                    size: 40,
+                    size: 30,
                     color: AppColors.white,
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: _screenWidth * 0.10,
-                  right: _screenWidth * 0.10,
-                  bottom: 50,
-                  top: _screenHeight * 0.29),
+              padding: EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.29),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,

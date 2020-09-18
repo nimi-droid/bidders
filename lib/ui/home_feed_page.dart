@@ -109,6 +109,20 @@ class PollItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalVotes = poll.options
+        .map((e) => e.numberOfVotes)
+        .toList()
+        .fold(0, (previousValue, element) => previousValue + element);
+
+    List<PollVoter> pollVoters = [];
+
+    //calculating all users
+    for (int i = 0; i < poll.options.length; i++) {
+      for (int j = 0; j < poll.options[i].pollVoters.length; j++) {
+        pollVoters.add(poll.options[i].pollVoters[j]);
+      }
+    }
+
     return Container(
       color: AppColors.darkGrey,
       padding: const EdgeInsets.all(20),
@@ -127,7 +141,7 @@ class PollItem extends StatelessWidget {
           const SizedBox(height: 17),
           getPollPercentageIndicator(),
           const SizedBox(height: 40),
-          StackedImagesVotesAndTimeLeft(votes: 4, recentPeople: getRecentPeopleList, timeLeft: 6)
+          StackedImagesVotesAndTimeLeft(votes: totalVotes, recentPeople: pollVoters)
         ],
       ),
     );

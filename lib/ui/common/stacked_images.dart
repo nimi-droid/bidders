@@ -1,15 +1,15 @@
+import 'package:bidders/models/poll.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../network/response/recent_people.dart';
 import '../../res/app_colors.dart';
 import '../../res/styles.dart';
 
 class StackedImages extends StatelessWidget {
   const StackedImages({Key key, this.recentLikes}) : super(key: key);
 
-  final List<RecentPeople> recentLikes;
+  final List<PollVoter> recentLikes;
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +21,28 @@ class StackedImages extends StatelessWidget {
           if (getImagesCount() > 0)
             Positioned(
               left: 0,
-              child: getCircularImage(recentLikes[0].image, recentLikes[0].fullName),
+              child: getCircularImage(recentLikes[0].userImage, recentLikes[0].userName),
             )
           else
             Container(),
           if (getImagesCount() > 1)
             Positioned(
               left: 11,
-              child: getCircularImage(recentLikes[1].image, recentLikes[1].fullName),
+              child: getCircularImage(recentLikes[1].userImage, recentLikes[1].userImage),
             )
           else
             Container(),
           if (getImagesCount() > 2)
             Positioned(
               left: 22,
-              child: getCircularImage(recentLikes[2].image, recentLikes[2].fullName),
+              child: getCircularImage(recentLikes[2].userImage, recentLikes[2].userImage),
             )
           else
             Container(),
           if (getImagesCount() > 3)
             Positioned(
               left: 33,
-              child: getCircularImage(recentLikes[3].image, recentLikes[3].fullName),
+              child: getCircularImage(recentLikes[3].userImage, recentLikes[3].userImage),
             )
           else
             Container()
@@ -91,13 +91,11 @@ class StackedImages extends StatelessWidget {
 }
 
 class StackedImagesVotesAndTimeLeft extends StatelessWidget {
-  const StackedImagesVotesAndTimeLeft(
-      {@required this.votes, this.recentPeople, this.timeLeft, Key key})
+  const StackedImagesVotesAndTimeLeft({@required this.votes, this.recentPeople, Key key})
       : super(key: key);
 
-  final List<RecentPeople> recentPeople;
+  final List<PollVoter> recentPeople;
   final int votes;
-  final int timeLeft;
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +103,7 @@ class StackedImagesVotesAndTimeLeft extends StatelessWidget {
       children: <Widget>[
         StackedImages(recentLikes: recentPeople),
         const SizedBox(width: 8),
-        Text('$votes Votes • $timeLeft Hours remaining',
-            style: tsBoldWhite12.copyWith(color: AppColors.whiteOpacity60))
+        Text('$votes Votes', style: tsBoldWhite12.copyWith(color: AppColors.whiteOpacity60))
       ],
     );
   }
