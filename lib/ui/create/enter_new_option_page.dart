@@ -44,12 +44,12 @@ class _NewOptionPageState extends State<NewOptionPage> {
           children: <Widget>[
             Align(
               alignment: Alignment.topLeft,
-              child: InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                  padding: const EdgeInsets.only(left: 22, right: 25),
-                  child: const Icon(
+              child: Container(
+                margin: EdgeInsets.only(top: _screenWidth * 0.094),
+                padding: const EdgeInsets.only(left: 22, right: 25),
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(
                     Icons.close,
                     size: 30,
                     color: AppColors.white,
