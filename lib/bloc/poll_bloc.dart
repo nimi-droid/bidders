@@ -29,6 +29,8 @@ class PollBloc extends BaseBloc {
   @override
   void onDispose() {
     _getPollsSuccessBS.close();
+    _getAppUsersSuccessBS.close();
+    super.onDispose();
   }
 
   /* CREATING POLL */
@@ -185,6 +187,7 @@ class PollBloc extends BaseBloc {
           )
         });
 
+    _getAppUsersSuccessBS.add(user);
     return user;
   }
 }
