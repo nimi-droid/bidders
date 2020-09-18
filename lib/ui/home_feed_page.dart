@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/extensions/context_extension.dart';
@@ -14,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'common/stacked_images.dart';
 
@@ -24,6 +27,24 @@ class HomeFeedPage extends StatefulWidget {
 
 class _HomeFeedPageState extends State<HomeFeedPage> {
   PollBloc _pollBloc;
+
+  RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 500));
+    _pollBloc.fetchAllPolls();
+    if (mounted) setState(() {});
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 500));
+    _pollBloc.fetchAllPolls();
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
 
   @override
   void initState() {
@@ -54,19 +75,54 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
           stream: _pollBloc.getPollsListStream,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return ListView.separated(
-                separatorBuilder: (context, index) => const SizedBox(height: 10),
-                itemCount: snapshot.data.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => PollItem(
-                  poll: snapshot.data[index],
-                  voteOnPoll: onPollItemClicked,
-                  itemPosition: index,
+              return SmartRefresher(
+                enablePullDown: true,
+                enablePullUp: true,
+                header: WaterDropHeader(waterDropColor: AppColors.blueColor),
+                footer: CustomFooter(
+                  builder: (BuildContext context, LoadStatus mode) {
+                    Widget body;
+                    if (mode == LoadStatus.idle) {
+                      body = Text("pull up load");
+                    } else if (mode == LoadStatus.loading) {
+                      body = CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.blueColor),
+                      );
+                    } else if (mode == LoadStatus.failed) {
+                      body = Text("Load Failed!Click retry!");
+                    } else if (mode == LoadStatus.canLoading) {
+                      body = Text("release to load more");
+                    } else {
+                      body = Text("No more Data");
+                    }
+                    return Container(
+                      height: 55.0,
+                      child: Center(child: body),
+                    );
+                  },
+                ),
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                  itemCount: snapshot.data.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => PollItem(
+                    poll: snapshot.data[index],
+                    voteOnPoll: onPollItemClicked,
+                    itemPosition: index,
+                  ),
                 ),
               );
-            } else {
-              return Container();
             }
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  AppColors.blueColor,
+                ),
+              ),
+            );
           }),
     );
   }
@@ -75,11 +131,13 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
     return StreamBuilder<AppUser>(
         stream: _pollBloc.getAppUserStream,
         builder: (context, snapshot) {
-          return HomeFeedHeader(
-              user: snapshot.data,
-              onStartPollClicked: () {
-                startNewPoll(context);
-              });
+          if (snapshot.hasData)
+            return HomeFeedHeader(
+                user: snapshot.data,
+                onStartPollClicked: () {
+                  startNewPoll(context);
+                });
+          return Container();
         });
   }
 

@@ -171,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
+    Utils.showLoader(context);
     final UserCredential authResult = await _auth.signInWithCredential(credential);
     final User user = authResult.user;
     if (user != null) {
@@ -180,8 +181,10 @@ class _LoginPageState extends State<LoginPage> {
               user, googleSignInAuthentication.accessToken, googleSignInAuthentication.idToken)
           .then((value) => PrefUtils.setUserToken(googleSignInAuthentication.accessToken));
       print('signInWithGoogle succeeded: $user');
+      Utils.hideLoader();
       return user;
     }
+    Utils.hideLoader();
     return null;
   }
 }

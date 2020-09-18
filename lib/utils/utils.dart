@@ -75,8 +75,10 @@ class Utils {
           context: _loaderContext,
           barrierDismissible: false,
           builder: (context) {
-            return SpinKitChasingDots(
-              color: Colors.white,
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.blueColor),
+              ),
             );
           }).then((value) => {_isLoaderShowing = false, Log.info('Loader hidden!')});
     }

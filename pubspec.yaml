@@ -29,6 +29,7 @@ dependencies:
   cached_network_image: ^2.0.0
   shimmer: ^1.1.1
   dotted_border: ^1.0.6
+  pull_to_refresh: ^1.6.1
 
 dev_dependencies:
   flutter_test:
