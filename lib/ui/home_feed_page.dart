@@ -13,6 +13,7 @@ import 'package:bidders/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'common/stacked_images.dart';
 
@@ -35,13 +36,16 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.charcoalGrey,
-      body: SafeArea(
-        child: Column(
-          children: [getHeaderWidget(context), getPollWidget()],
-        ),
-      ),
-    );
+        backgroundColor: AppColors.charcoalGrey,
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value:
+              SystemUiOverlayStyle.light.copyWith(systemNavigationBarColor: AppColors.primaryColor),
+          child: SafeArea(
+            child: Column(
+              children: [getHeaderWidget(context), getPollWidget()],
+            ),
+          ),
+        ));
   }
 
   Widget getPollWidget() {

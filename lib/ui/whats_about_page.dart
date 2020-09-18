@@ -5,6 +5,7 @@ import 'package:bidders/ui/common/heading_description_widget.dart';
 import 'package:bidders/ui/common/primary_button.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../routes.dart';
 import 'create/options_page.dart';
@@ -34,85 +35,89 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
 
     return Scaffold(
         backgroundColor: AppColors.primaryColor,
-        body: Stack(
-          alignment: Alignment.topLeft,
-          children: <Widget>[
-            Align(
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.light
+                .copyWith(systemNavigationBarColor: AppColors.primaryColor),
+            child: Stack(
               alignment: Alignment.topLeft,
-              child: Container(
-                margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                padding: const EdgeInsets.only(left: 22, right: 20),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
-                    Icons.arrow_back,
-                    size: 30,
-                    color: AppColors.white,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(top: _screenWidth * 0.094),
+                    padding: const EdgeInsets.only(left: 22, right: 25),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Icon(
+                        Icons.arrow_back,
+                        size: 30,
+                        color: AppColors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SingleChildScrollView(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.29),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const HeadingDescriptionWidget(
-                      heading: 'What’s it about?',
-                      description: 'Enter the leading question',
-                    ),
-                    SizedBox(
-                      height: _screenHeight * .057,
-                    ),
-                    TextFormField(
-                      controller: _textController,
-                      autofocus: true,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      onFieldSubmitted: (text) => _navigateToPage(context),
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .copyWith(fontWeight: FontWeight.w700),
-                      decoration: InputDecoration(
-                        hintText: 'Start typing...',
-                        filled: true,
-                        contentPadding:
-                            const EdgeInsets.only(left: 0, right: 10, top: 8, bottom: 20),
-                        hintStyle: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: AppColors.whiteOpacity60,
-                            ),
-                        labelStyle: Theme.of(context).textTheme.subtitle1,
-                        fillColor: Colors.transparent,
-                        focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.white, width: 1)),
-                        enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.white, width: 1)),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 30),
-                        child: AnimatedOpacity(
-                          opacity: hasTextEntered ? 1.0 : 0.2,
-                          duration: const Duration(milliseconds: 200),
-                          child: PrimaryButton(
-                              buttonText: 'Next', onButtonPressed: () => _navigateToPage(context)),
+                SingleChildScrollView(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.29),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const HeadingDescriptionWidget(
+                          heading: 'What’s it about?',
+                          description: 'Enter the leading question',
                         ),
-                      ),
-                    )
-                  ],
+                        SizedBox(
+                          height: _screenHeight * .057,
+                        ),
+                        TextFormField(
+                          controller: _textController,
+                          autofocus: true,
+                          keyboardType: TextInputType.text,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (text) => _navigateToPage(context),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .copyWith(fontWeight: FontWeight.w700),
+                          decoration: InputDecoration(
+                            hintText: 'Start typing...',
+                            filled: true,
+                            contentPadding:
+                                const EdgeInsets.only(left: 0, right: 10, top: 8, bottom: 20),
+                            hintStyle: Theme.of(context).textTheme.subtitle1.copyWith(
+                                  color: AppColors.whiteOpacity60,
+                                ),
+                            labelStyle: Theme.of(context).textTheme.subtitle1,
+                            fillColor: Colors.transparent,
+                            focusedBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: AppColors.white, width: 1)),
+                            enabledBorder: const UnderlineInputBorder(
+                                borderSide: BorderSide(color: AppColors.white, width: 1)),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 20, bottom: 30),
+                            child: AnimatedOpacity(
+                              opacity: hasTextEntered ? 1.0 : 0.2,
+                              duration: const Duration(milliseconds: 200),
+                              child: PrimaryButton(
+                                  buttonText: 'Next',
+                                  onButtonPressed: () => _navigateToPage(context)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        ));
+              ],
+            )));
   }
 
   void _navigateToPage(BuildContext context) {
