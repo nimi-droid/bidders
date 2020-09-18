@@ -1,5 +1,6 @@
 import 'package:bidders/bloc/login_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/custom_views/widget_animations.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:bidders/utils/utils.dart';
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             bottom: _screenHeight * .08,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Hero(
                 tag: hero_grappus,
@@ -114,21 +115,25 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Log in to your account',
-                      style: Theme.of(context).textTheme.subtitle1,
+              SizedBox(height: _screenHeight * 0.1),
+              FadeInAnimation(
+                delay: 300,
+                child: Column(
+                  children: [
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'Log in to your account',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: _screenHeight * .033,
-                  ),
-                  PrimaryButton(
-                      buttonText: 'Continue with Google', onButtonPressed: _loginWithGoogle),
-                ],
+                    SizedBox(
+                      height: _screenHeight * .033,
+                    ),
+                    PrimaryButton(
+                        buttonText: 'Continue with Google', onButtonPressed: _loginWithGoogle),
+                  ],
+                ),
               )
             ],
           ),
@@ -166,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
+    Utils.showLoader(context);
     final UserCredential authResult = await _auth.signInWithCredential(credential);
     final User user = authResult.user;
     if (user != null) {
@@ -175,8 +181,10 @@ class _LoginPageState extends State<LoginPage> {
               user, googleSignInAuthentication.accessToken, googleSignInAuthentication.idToken)
           .then((value) => PrefUtils.setUserToken(googleSignInAuthentication.accessToken));
       print('signInWithGoogle succeeded: $user');
+      Utils.hideLoader();
       return user;
     }
+    Utils.hideLoader();
     return null;
   }
 }
