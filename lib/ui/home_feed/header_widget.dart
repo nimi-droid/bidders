@@ -5,6 +5,7 @@ import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/common/circular_image_view.dart';
 import 'package:bidders/ui/leaderboard/leaderboard_page.dart';
+import 'package:bidders/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -61,16 +62,15 @@ class HomeFeedHeader extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(100)),
                     ),
                     // ignore: prefer_const_literals_to_create_immutables
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.account_balance_wallet,
-                          color: AppColors.white,
-                          size: 15,
-                        ),
-                        const SizedBox(width: 9),
-                        const Text("₹ 2,500", style: tsBoldWhite14)
-                      ],
+                    child: InkWell(
+                      onTap: () {
+                        Utils.showSuccessMessage(context, coming_soon);
+                      },
+                      child: const Icon(
+                        Icons.account_balance_wallet,
+                        color: AppColors.white,
+                        size: 15,
+                      ),
                     ),
                   ),
                   Container(
@@ -117,7 +117,7 @@ class HomeFeedHeader extends StatelessWidget {
                 else
                   CircularImageView(url: user.image, callBack: null),
                 const SizedBox(width: 11),
-                Text(hintStartPoll, style: tsRegular1.copyWith(color: AppColors.whiteOpacity30)),
+                Text(hintStartPoll, style: tsRegular1.copyWith(color: AppColors.whiteOpacity70)),
                 const SizedBox(width: 27),
               ],
             ),

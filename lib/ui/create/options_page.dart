@@ -1,4 +1,5 @@
 import 'package:bidders/bloc/create_poll_bloc.dart';
+import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/models/create_poll_request.dart';
 import 'package:bidders/models/poll.dart';
@@ -6,12 +7,12 @@ import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/common/heading_description_widget.dart';
 import 'package:bidders/ui/common/primary_button.dart';
-import 'package:bidders/ui/date_time_page.dart';
 import 'package:bidders/utils/utils.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../wohoo_page.dart';
 import 'enter_new_option_page.dart';
 
 class OptionsPage extends StatefulWidget {
@@ -26,10 +27,12 @@ class OptionsPage extends StatefulWidget {
 class _OptionsPageState extends State<OptionsPage> with OptionsListener {
   double _screenWidth;
   final CreatePollBloc _createPollBloc = CreatePollBloc();
+  PollBloc _pollBloc;
 
   @override
   void initState() {
     super.initState();
+    _pollBloc = PollBloc();
   }
 
   @override
@@ -133,7 +136,6 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
             if (snapshot.hasData && snapshot.data != null) {
               return ListView.separated(
                 itemCount: snapshot.data.length,
-                physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (context, position) => const SizedBox(height: 20),
                 itemBuilder: (context, position) {
                   return OptionsItem(
@@ -167,11 +169,36 @@ class _OptionsPageState extends State<OptionsPage> with OptionsListener {
         options.add(PollOption(statement: option, numberOfVotes: 0, pollVoters: []));
       }
 
-      final request = widget.createPollRequest.copyWith(options: options);
-      Navigator.push(context, RouteAnimationSlideFromRight(widget: DateTimePage(request: request)));
+      final request =
+          widget.createPollRequest.copyWith(options: options, startTime: DateTime.now());
+      createPoll(request);
     } else {
       Utils.showErrorMessage(context, 'Please add minimum 2 options');
     }
+  }
+
+  void createPoll(CreatePollRequest createPollRequest) {
+    Utils.showLoader(context);
+
+    _pollBloc
+        .createPoll(
+            description: createPollRequest.description,
+            options: createPollRequest.options,
+            durationFromNow: DateTime.now(),
+            pollImage: createPollRequest.pollImage)
+        .listen((event) {
+      Utils.hideLoader();
+      navigateToWohooPage(createPollRequest);
+    });
+  }
+
+  void navigateToWohooPage(CreatePollRequest createPollRequest) {
+    Navigator.pushReplacement(
+      context,
+      RouteAnimationSlideFromRight(
+        widget: WohooPage(createPollRequest: createPollRequest),
+      ),
+    );
   }
 }
 
