@@ -146,12 +146,12 @@ class PollBloc extends BaseBloc {
       pollOptions.add(PollOption(
           statement: data[key]['statement'],
           numberOfVotes: data[key]['numberOfVotes'],
-          pollVoters: getPollVoters(data[key]['voters'])));
+          pollVoters: getPollVoters(key, data[key]['voters'])));
     });
     return pollOptions;
   }
 
-  List<PollVoter> getPollVoters(List<dynamic> data) {
+  List<PollVoter> getPollVoters(String choice, List<dynamic> data) {
     final pollVoters = <PollVoter>[];
     if (data == null) {
       return [];
@@ -161,6 +161,7 @@ class PollBloc extends BaseBloc {
         userId: voter['userId'],
         userName: voter['userName'],
         userImage: voter['userImage'],
+        choice: choice,
       ));
     });
     return pollVoters;

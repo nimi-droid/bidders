@@ -44,25 +44,21 @@ class _NewOptionPageState extends State<NewOptionPage> {
           children: <Widget>[
             Align(
               alignment: Alignment.topLeft,
-              child: InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                  padding: EdgeInsets.only(left: _screenWidth * 0.10, right: _screenWidth * 0.10),
-                  child: const Icon(
+              child: Container(
+                margin: EdgeInsets.only(top: _screenWidth * 0.094),
+                padding: const EdgeInsets.only(left: 22, right: 25),
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(
                     Icons.close,
-                    size: 40,
+                    size: 30,
                     color: AppColors.white,
                   ),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: _screenWidth * 0.10,
-                  right: _screenWidth * 0.10,
-                  bottom: 50,
-                  top: _screenHeight * 0.29),
+              padding: EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.29),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,

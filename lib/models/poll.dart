@@ -29,7 +29,7 @@ class PollOption {
 }
 
 class PollVoter {
-  int choice;
+  String choice;
   String userName;
   String userImage;
   String userId;

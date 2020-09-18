@@ -1,8 +1,8 @@
 import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
+import 'package:bidders/extensions/context_extension.dart';
 import 'package:bidders/models/poll.dart';
 import 'package:bidders/models/user.dart';
-import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
 import 'package:bidders/res/styles.dart';
 import 'package:bidders/ui/home_feed/header_widget.dart';
@@ -109,6 +109,20 @@ class PollItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalVotes = poll.options
+        .map((e) => e.numberOfVotes)
+        .toList()
+        .fold(0, (previousValue, element) => previousValue + element);
+
+    List<PollVoter> pollVoters = [];
+
+    //calculating all users
+    for (int i = 0; i < poll.options.length; i++) {
+      for (int j = 0; j < poll.options[i].pollVoters.length; j++) {
+        pollVoters.add(poll.options[i].pollVoters[j]);
+      }
+    }
+
     return Container(
       color: AppColors.darkGrey,
       padding: const EdgeInsets.all(20),
@@ -127,7 +141,12 @@ class PollItem extends StatelessWidget {
           const SizedBox(height: 17),
           getPollPercentageIndicator(),
           const SizedBox(height: 40),
-          StackedImagesVotesAndTimeLeft(votes: 4, recentPeople: getRecentPeopleList, timeLeft: 6)
+          GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () {
+                context.showPollVotesBottomSheet(pollVoters);
+              },
+              child: StackedImagesVotesAndTimeLeft(votes: totalVotes, recentPeople: pollVoters))
         ],
       ),
     );
@@ -225,10 +244,3 @@ class PollsPercentItem extends StatelessWidget {
     );
   }
 }
-
-const sampleQuestion = 'Which is the fastest framework for\ncross-platform app development?';
-List<RecentPeople> getRecentPeopleList = [
-  RecentPeople(null, "Nimish Wa,"),
-  RecentPeople(null, "Archita s,"),
-  RecentPeople(null, "P k,"),
-];
