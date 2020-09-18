@@ -77,24 +77,21 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
             if (snapshot.hasData) {
               return SmartRefresher(
                 enablePullDown: true,
-                enablePullUp: true,
+                enablePullUp: false,
                 header: WaterDropHeader(waterDropColor: AppColors.blueColor),
                 footer: CustomFooter(
                   builder: (BuildContext context, LoadStatus mode) {
-                    Widget body;
+                    Widget body = Container();
                     if (mode == LoadStatus.idle) {
-                      body = Text("pull up load");
                     } else if (mode == LoadStatus.loading) {
                       body = CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(AppColors.blueColor),
                       );
                     } else if (mode == LoadStatus.failed) {
-                      body = Text("Load Failed!Click retry!");
+                      body = Text("Couldn't fetch data. Please try again!");
                     } else if (mode == LoadStatus.canLoading) {
                       body = Text("release to load more");
-                    } else {
-                      body = Text("No more Data");
-                    }
+                    } else {}
                     return Container(
                       height: 55.0,
                       child: Center(child: body),
@@ -202,7 +199,7 @@ class PollItem extends StatelessWidget {
           GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {
-                context.showPollVotesBottomSheet(pollVoters);
+                if (pollVoters.length > 0) context.showPollVotesBottomSheet(pollVoters);
               },
               child: StackedImagesVotesAndTimeLeft(votes: totalVotes, recentPeople: pollVoters))
         ],
@@ -232,13 +229,14 @@ class PollItem extends StatelessWidget {
         totalPollParticipantCount: totalParticipation,
         showResults: poll.hasVoted,
         position: position,
-        onItemClick: onOptionSelected,
+        onItemClick: (position) => onOptionSelected(context, position),
       ),
     );
   }
 
-  void onOptionSelected(int position) {
+  void onOptionSelected(BuildContext context, int position) {
     if (poll.hasVoted) {
+      Utils.showErrorMessage(context, 'You can only vote once!');
       return;
     }
 
