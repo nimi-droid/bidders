@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bidders/models/poll.dart';
 import 'package:bidders/res/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -120,5 +121,14 @@ class Utils {
     final DateFormat formatter = DateFormat(format);
     final String formattedDate = formatter.format(dateTime);
     return formattedDate;
+  }
+
+  static int comparePollsCreatedAt(Poll a, Poll b) {
+    if (a.createdAt.isBefore(b.createdAt))
+      return 1;
+    else if (a.createdAt.isAfter(b.createdAt))
+      return -1;
+    else
+      return 0;
   }
 }

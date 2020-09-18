@@ -54,8 +54,11 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
                 separatorBuilder: (context, index) => const SizedBox(height: 10),
                 itemCount: snapshot.data.length,
                 shrinkWrap: true,
-                itemBuilder: (context, index) =>
-                    PollItem(poll: snapshot.data[index], voteOnPoll: onPollItemClicked),
+                itemBuilder: (context, index) => PollItem(
+                  poll: snapshot.data[index],
+                  voteOnPoll: onPollItemClicked,
+                  itemPosition: index,
+                ),
               );
             } else {
               return Container();
@@ -173,14 +176,16 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
   }
 
   void onPollItemClicked(String pollId, int choice, int pollPosition) {
-//    Utils.showLoader(context);
-//    _pollBloc.voteOnAPoll(pollId, choice, pollPosition);
-    Utils.showSuccessMessage(context, 'coming soon');
+    Utils.showLoader(context);
+    _pollBloc.voteOnAPoll(pollId, choice, pollPosition);
+    // Utils.showSuccessMessage(context, 'coming soon');
   }
 }
 
 class PollItem extends StatelessWidget {
-  const PollItem({Key key, this.poll, this.voteOnPoll, this.itemPosition}) : super(key: key);
+  const PollItem(
+      {Key key, @required this.poll, @required this.voteOnPoll, @required this.itemPosition})
+      : super(key: key);
 
   final Poll poll;
   final Function(String pollId, int choice, int itemPosition) voteOnPoll;
