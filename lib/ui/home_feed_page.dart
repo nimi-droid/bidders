@@ -167,7 +167,7 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
   }
 
   void startNewPoll(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       RouteAnimationSlideFromRight(
         widget: WhatsAboutPage(),
@@ -178,7 +178,6 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
   void onPollItemClicked(String pollId, int choice, int pollPosition) {
     Utils.showLoader(context);
     _pollBloc.voteOnAPoll(pollId, choice, pollPosition);
-    // Utils.showSuccessMessage(context, 'coming soon');
   }
 }
 
@@ -224,13 +223,18 @@ class PollItem extends StatelessWidget {
       totalParticipation += poll.options[i].numberOfVotes;
     }
 
+    final maxVotedOption = poll.options
+        .map((e) => e.numberOfVotes)
+        .toList()
+        .reduce((curr, next) => curr > next ? curr : next);
+
     return ListView.separated(
       itemCount: poll.options.length,
       shrinkWrap: true,
       separatorBuilder: (context, position) => const SizedBox(height: 15),
       itemBuilder: (context, position) => PollsPercentItem(
         pollOption: poll.options[position],
-        ishigestVoted: true,
+        ishigestVoted: poll.options[position].numberOfVotes == maxVotedOption,
         totalPollParticipantCount: totalParticipation,
         showResults: poll.hasVoted,
         position: position,
@@ -280,9 +284,11 @@ class PollsPercentItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(100)),
               child: LinearProgressIndicator(
-                value: pollOption.numberOfVotes != 0
-                    ? pollOption.numberOfVotes / totalPollParticipantCount
-                    : 0,
+                value: !showResults
+                    ? 0
+                    : pollOption.numberOfVotes != 0
+                        ? pollOption.numberOfVotes / totalPollParticipantCount
+                        : 0,
                 valueColor: AlwaysStoppedAnimation<Color>(
                     ishigestVoted ? AppColors.white : AppColors.whiteOpacity30),
                 backgroundColor: AppColors.whiteOpacity15,
@@ -291,11 +297,11 @@ class PollsPercentItem extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 21),
-            child: showResults
-                ? Text(
-                    '${pollOption?.statement} (${pollOption.numberOfVotes ~/ totalPollParticipantCount * 100}%)',
-                    style: tsBoldDarkGrey)
-                : Text(pollOption?.statement, style: tsRegular1),
+            child: !showResults
+                ? Text(pollOption?.statement, style: tsRegular1)
+                : Text(
+                    '${pollOption?.statement} (${(pollOption.numberOfVotes / totalPollParticipantCount * 100).floor()}%)',
+                    style: ishigestVoted ? tsBoldDarkGrey : tsRegular1),
           )
         ],
       ),
