@@ -41,14 +41,14 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
               alignment: Alignment.topLeft,
               child: Container(
                 margin: EdgeInsets.only(top: _screenWidth * 0.094),
-                padding: const EdgeInsets.only(left: 15, right: 20),
+                padding: const EdgeInsets.only(left: 22, right: 20),
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
                   },
                   child: const Icon(
                     Icons.arrow_back,
-                    size: 40,
+                    size: 30,
                     color: AppColors.white,
                   ),
                 ),
@@ -57,7 +57,7 @@ class _WhatsAboutPageState extends State<WhatsAboutPage> {
             SingleChildScrollView(
               child: Padding(
                 padding:
-                    EdgeInsets.only(left: 20, right: 20, bottom: 50, top: _screenHeight * 0.29),
+                    EdgeInsets.only(left: 25, right: 25, bottom: 50, top: _screenHeight * 0.29),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,

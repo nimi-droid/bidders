@@ -1,21 +1,20 @@
 import 'package:bidders/bloc/poll_bloc.dart';
 import 'package:bidders/custom_views/route_animations.dart';
 import 'package:bidders/models/poll.dart';
+import 'package:bidders/models/user.dart';
 import 'package:bidders/network/response/recent_people.dart';
 import 'package:bidders/res/app_colors.dart';
-import 'package:bidders/res/strings.dart';
 import 'package:bidders/res/styles.dart';
+import 'package:bidders/ui/home_feed/header_widget.dart';
 import 'package:bidders/ui/home_feed/user_info_widget.dart';
 import 'package:bidders/ui/whats_about_page.dart';
-import 'package:bidders/utils/constants.dart';
 import 'package:bidders/utils/date_time_utils.dart';
 import 'package:bidders/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'common/circular_image_view.dart';
 import 'common/stacked_images.dart';
-import 'leaderboard/leaderboard_page.dart';
 
 class HomeFeedPage extends StatefulWidget {
   @override
@@ -30,6 +29,7 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
     super.initState();
     _pollBloc = PollBloc();
     _pollBloc.fetchAllPolls();
+    _pollBloc.fetchUser(FirebaseAuth.instance.currentUser.uid);
   }
 
   @override
@@ -68,102 +68,15 @@ class _HomeFeedPageState extends State<HomeFeedPage> {
   }
 
   Widget getHeaderWidget(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      text: 'Grappus',
-                      style: tsRegular1,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(top: 5, bottom: 5, left: 7, right: 7),
-                    margin: const EdgeInsets.only(left: 5),
-                    decoration: const BoxDecoration(
-                        color: AppColors.blueColor,
-                        borderRadius: BorderRadius.all(Radius.circular(11))),
-                    child: RichText(
-                      textAlign: TextAlign.center,
-                      text: const TextSpan(
-                        text: 'BET',
-                        style: tsRegular1,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                    height: 30,
-                    padding: const EdgeInsets.only(left: 15, right: 15),
-                    decoration: const BoxDecoration(
-                      color: AppColors.whiteOpacity10,
-                      borderRadius: BorderRadius.all(Radius.circular(100)),
-                    ),
-                    // ignore: prefer_const_literals_to_create_immutables
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.account_balance_wallet,
-                          color: AppColors.white,
-                          size: 15,
-                        ),
-                        const SizedBox(width: 9),
-                        const Text("₹ 2,500", style: tsBoldWhite14)
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: 30,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.whiteOpacity10,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 5.0),
-                      child: IconButton(
-                        icon: const Icon(Icons.receipt, size: 15),
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.push(
-                              context, RouteAnimationSlideFromRight(widget: LeaderBoardPage()));
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const SizedBox(height: 35),
-          InkWell(
-            onTap: () {
-              startNewPoll(context);
-            },
-            child: Row(
-              children: [
-                const CircularImageView(url: sampleImageUrl, callBack: null),
-                const SizedBox(width: 11),
-                Text(hintStartPoll, style: tsRegular1.copyWith(color: AppColors.whiteOpacity30)),
-                const SizedBox(width: 27),
-              ],
-            ),
-          ),
-          const SizedBox(height: 35),
-        ],
-      ),
-    );
+    return StreamBuilder<AppUser>(
+        stream: _pollBloc.getAppUserStream,
+        builder: (context, snapshot) {
+          return HomeFeedHeader(
+              user: snapshot.data,
+              onStartPollClicked: () {
+                startNewPoll(context);
+              });
+        });
   }
 
   void startNewPoll(BuildContext context) {

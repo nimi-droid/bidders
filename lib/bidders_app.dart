@@ -19,7 +19,7 @@ class BiddersApp extends StatelessWidget {
     ]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarBrightness: Brightness.light,
-      systemNavigationBarColor: AppColors.white,
+      systemNavigationBarColor: AppColors.primaryColor,
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,
     ));

@@ -42,7 +42,8 @@ class CircularImageView extends StatelessWidget {
                   color: Colors.black,
                 ),
               )),
-          errorWidget: (context, url, error) => Image.asset(icUploadImage)),
+          errorWidget: (context, url, error) =>
+              Image.asset(icUploadImage, height: height, width: width)),
     );
   }
 }
