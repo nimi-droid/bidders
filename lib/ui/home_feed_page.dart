@@ -239,10 +239,3 @@ class PollsPercentItem extends StatelessWidget {
     );
   }
 }
-
-const sampleQuestion = 'Which is the fastest framework for\ncross-platform app development?';
-List<RecentPeople> getRecentPeopleList = [
-  RecentPeople(null, "Nimish Wa,"),
-  RecentPeople(null, "Archita s,"),
-  RecentPeople(null, "P k,"),
-];
